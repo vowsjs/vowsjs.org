@@ -1,18 +1,27 @@
 <!doctype html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet/less" type="text/css" href="/less/main.less">
+    <script src="/js/less.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link rel="alternate" type="application/atom+xml" title="<%= title %> - feed" href="/index.xml" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title><%= title %></title>
   </head>
   <body>
     <section>
-      <%= yield %> 
+      <%= yield %>
     </section>
     <footer>
       powered by <a href="http://cloudhead.io/toto">toto</a>
     </footer>
+    <a href="http://github.com/you">
+      <img style="position: absolute; z-index: 5; top: 0; left: 0; border: 0;"
+           src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"
+           alt="Fork me on GitHub" />
+    </a>
+    <script src="/js/hijs.js"></script>
   </body>
 </html>
 

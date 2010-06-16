@@ -1,20 +1,54 @@
-<section id="articles">
-  <% for article in articles[0...3] %>
-    <article class="post">
-      <header>
-        <h1><a href="<%= article.path %>"><%= article.title %></a></h1>
-        <span class="date"><%= article.date %></span>
-      </header>
+<header id="main">
+  <div class="content">
+    <section id="intro">
+      <h1>Vows</h1>
+      <h2><span>Asynchronous</span> behaviour driven <span>development</span> for Node.</h2>
+      <h3>
+        There are two reasons why we might want asynchronous testing.
+        The first, and obvious reason is that node.js is asynchronous,
+        and therefore our tests need to be. The second reason is to make test suites which target I/O
+        libraries run much faster.
+      </h3>
+    </section>
 
-      <section class="content">
-        <%= article.summary %>
-      </section>
-      <div class="more"><a href="<%= article.path %>">read on &raquo;</a></div>
-    </article>
-  <% end %>
+    <section id="example">
+      <pre><%= File.read(Toto::Paths[:pages] + '/vows.html').strip %></pre>
+    </section>
+  </div>
+</header>
+
+<section id="menu">
+  <div class="content">
+    <nav>
+      <a href="#synopsis">synopsis</a>
+      <a href="#intro">intro</a>
+      <a href="#about">about</a>
+      <a href="#synopsis">docs</a>
+    </nav>
+  </div>
 </section>
 
-<section id="archives">
-  <%= archives[3..-1] %>
+<section id="synopsis">
+  <div class="content">
+    <%= markdown File.read(Toto::Paths[:pages] + '/synopsis.md') %>
+  </div>
 </section>
 
+<section id="doc">
+  <div class="content">
+      <%= markdown File.read(Toto::Paths[:pages] + '/doc.md') %>
+  </div>
+</section>
+
+<section id="reference">
+  <div class="content">
+    <%= markdown File.read(Toto::Paths[:pages] + '/reference.md') %>
+  </div>
+</section>
+
+<section id="about">
+  <div class="content">
+    <%= markdown File.read(Toto::Paths[:pages] + '/about.md') %>
+  </div>
+</section>
+<footer></footer>

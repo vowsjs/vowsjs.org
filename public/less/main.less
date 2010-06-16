@@ -1,0 +1,288 @@
+@light-green:  hsl(75, 50%, 65%);
+@light-yellow: desaturate(#fefec8, 10%);
+@darkest:      hsl(20, 10%, 15%);
+@dark:         hsl(100, 30%, 30%);
+@medium:       hsl(90, 40%, 30%);
+@light:        hsl(90, 40%, 20%);
+@lightest:     hsl(90, 20%, 90%);
+@highlight:    hsl(80, 50%, 90%);
+@red:          hsl(10, 60%, 40%);
+
+.box-shadow (@x, @y, @blur, @alpha) {
+  box-shadow:         @x @y @blur rgba(0, 0, 0, @alpha);
+  -moz-box-shadow:    @x @y @blur rgba(0, 0, 0, @alpha);
+  -webkit-box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+}
+.border-radius (@radius) {
+  border-radius: @radius;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-bottom-left-radius: 0;
+  -moz-border-top-left-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+}
+.box-shadow-inset (@x, @y, @blur, @color) {
+  box-shadow: @x @y @blur @color inset;
+  -moz-box-shadow: @x @y @blur @color inset;
+  -webkit-box-shadow: @x @y @blur @color inset;
+}
+.code () {
+  font-family: 'Bitstream Vera Sans Mono',
+               'DejaVu Sans Mono',
+               'Monaco',
+               Courier,
+               monospace !important;
+}
+.wrap () {
+  text-wrap: wrap;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+html { margin: 0 }
+body {
+  background-color: @darkest;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  font-size: 100%;
+  width: 100%;
+}
+nav, header, footer, section, article {
+	display: block;
+}
+a {
+  color: #b83000;
+}
+h1 a {
+  color: black;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: normal;
+}
+ul, li {
+  list-style-type: none;
+}
+code { .code; }
+code {
+  .string, .regexp { color: @dark }
+  .keyword { font-weight: bold }
+  .comment { color: rgba(0, 0, 0, 0.5) }
+  .number { color: @red }
+  .class, .special { color: rgba(0, 50, 100, 0.8) }
+}
+pre {
+  padding: 0 30px;
+  .wrap();
+}
+blockquote {
+  font-style: italic;
+}
+body > footer {
+  text-align: left;
+  margin-left: 10px;
+	font-style: italic;
+  font-size: 18px;
+  color: #888;
+}
+
+nav {
+  margin-left: 15px;
+}
+nav a {
+  display: inline-block;
+  color: white;
+  line-height: 42px;
+  margin: 0;
+  padding: 0px 15px;
+  text-shadow: -1px -1px 1px #555;
+  text-decoration: none;
+  &:hover {
+    background-color: darken(@red, 10%);
+    text-decoration: none;
+  }
+}
+
+.content {
+  margin: 0 auto;
+  width: 960px;
+}
+
+#menu {
+  position: relative;
+  z-index: 3;
+  clear: both;
+  display: block;
+  background-color: @red;
+  width: 100%;
+  height: 42px;
+  border-top: 2px solid lighten(@red, 20%);
+  border-bottom: 2px solid darken(@red, 15%);
+  .box-shadow(0, 0px, 10px, 0.3);
+}
+
+#main {
+  margin: 0 auto;
+  width: 100%;
+  height: 430px;
+  background-color: @light-green;
+  border-top: 8px solid darken(@light-green, 5%);
+
+  #intro {
+    background-color: lighten(@light-green, 25%);
+    float: left;
+    margin-top: -8px;
+
+    position: relative;
+    z-index: 2;
+    font-family: 'Droid Serif', 'Georgia';
+    width: 420px;
+    padding: 45px 20px 23px 30px;
+    border: 2px dashed darken(@light-green, 10%);
+    .box-shadow(1px, 0px, 6px, 0.5);
+    border-bottom: 0;
+    border-top: 0;
+  }
+  h1 {
+    text-shadow: 1px 1px 1px white;
+    font-family: 'Lobster';
+    color: darken(@dark, 4%);
+    font-size: 96px;
+    font-weight: normal;
+  }
+  h2 {
+    span {
+      color: @red;  
+    }
+    color: @medium;
+    margin: 20px 0;
+    font-size: 28px;
+    line-height: 1.2em;
+  }
+  h3 {
+    color: @medium;
+    line-height: 1.4em;
+    margin: 30px 0 15px 0;
+    font-size: 1em;
+    text-shadow: 0px 0px 0px @lightest;
+  }
+  #example {
+    pre {
+      margin-top: 30px;
+      background-color: darken(@darkest, 2%);
+      border: 0;
+      width: 400px;
+      color: @lightest;
+      background-repeat: repeat;
+      padding: 30px;
+      border: 2px solid @lightest;
+      border-left: 0;
+      //.box-shadow(0, -3px, 15px, 0.3);
+      .box-shadow(0, 0px, 15px, 0.3);
+      .code;
+      .border-radius(2px);
+      .vow, #ok {
+        color: hsl(90, 30%, 50%);
+      }
+      .vow.pending {
+        color: hsl(190, 20%, 50%);  
+      }
+      #time { color: #aaa }
+    }
+    float: left;
+    font-size: 12px;
+    width: 460px;
+  }
+}
+
+#synopsis, #doc, #reference {
+  .content {
+    width: 870px;
+    padding: 45px;
+  }
+  margin: 0 auto;
+  font-family: 'Droid Serif', 'Georgia', serif;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 0 60px;
+  pre {
+    border-width: 1px;
+    border-style: dashed;
+    padding: 15px;
+    margin: 15px 0;
+  }
+  h1 {
+    font-size: 48px;
+    font-family: 'Lobster';
+    margin-top: 15px;
+    margin-bottom: 30px;
+  }
+  h2 {
+    margin: 30px 0;
+  }
+  h3 {
+    margin: 10px 0;
+  }
+}
+
+
+#doc {
+  @bg: lighten(@light-yellow, 5%);
+  color: lighten(@darkest, 10%);
+  background-color: darken(@light-yellow, 10%);
+  h1 { 
+  }
+  .content {
+    clear: both;
+    border-color: transparent;
+    background-color: @light-yellow;
+    .box-shadow(0, 5px, 5px, 0.4);
+  }
+  pre {
+    background-color: @bg;
+    border-color: darken(@light-yellow, 50%);
+  }
+}
+
+#reference, #synopsis {
+  @bg: desaturate(darken(@darkest, 5%), 20%);
+  text-shadow: 0 -1px 1px @bg;
+  color: @highlight;
+  background-color: @bg;
+  .content {
+    background-color: desaturate(@darkest, 20%);
+    clear: both;
+    .box-shadow(0, 5px, 5px, 0.4);
+  }
+  pre {
+    padding: 20px;
+    font-size: 14px;
+    line-height: 18px;
+    background-color: @bg;
+    border-color: darken(@light-yellow, 5%);
+  }
+  code {
+    .string, .regexp { color: desaturate(@light-green, 15%) }
+    .keyword { color: hsl(40, 40%, 60%); font-weight: normal }
+    .comment { color: rgba(0, 0, 0, 0.5) }
+    .number { color: lighten(@red, 10%) }
+    .class, .special { color: hsl(190, 20%, 50%) }
+  }
+}
+#synopsis {
+  background-color: @darkest !important;
+  .content {
+    background-color: desaturate(lighten(@darkest, 3%), 5%);
+  }
+}

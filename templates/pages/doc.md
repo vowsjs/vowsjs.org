@@ -1,5 +1,5 @@
-Documentation
-=============
+Guide
+=====
 
 How topics work
 ---------------
@@ -77,13 +77,13 @@ per file, and have the suite's subject match the file name. Test suites are crea
 
     var suite = vows.describe('subject');
 
-Tests are added to suites in *batches*. This is done with the `addVows` method.
+Tests are added to suites in *batches*. This is done with the `addBatch` method.
 
-    suite.addVows({});
+    suite.addBatch({});
 
 You can add as many batches to a suite as you want. Batches are executed *sequentially*.
 
-    suite.addVows({/* executed 1st */}).addVows({/* 2nd */}).addVows({/* 3rd */});
+    suite.addBatch({/* 1st */}).addBatch({/* 2nd */}).addBatch({/* 3rd */});
 
 Batches are useful when you want to test functionality in a certain order.
 
@@ -91,7 +91,7 @@ Batches are useful when you want to test functionality in a certain order.
 
 The simplest way to run a test suite, is with the `run` method:
 
-    vows.describe('subject').addVows({/* ... */}).run();
+    vows.describe('subject').addBatch({/* ... */}).run();
 
 The `run` method takes an optional callback, which is called when all tests are done running.
 The test results are passed to the callback (if provided), as an object:
@@ -121,7 +121,7 @@ of ways to do that, the easiest is through the `export` method:
 
 *subject-test.js*
 
-    vows.describe('subject').addVows({/* ... */}).export(module);
+    vows.describe('subject').addBatch({/* ... */}).export(module);
 
 `export` takes one argument, the module you want to export the test suite to. Fortunately,
 node provides a global variable called `module`, which is a reference to the current module.
@@ -151,9 +151,9 @@ an API to a library:
     // A test suite, describing 'subject'
 
     vows.describe('subject') // Create the suite, describing 'subject'
-        .addVows({})         // Add the 1st batch
-        .addVows({})         // Add a 2nd batch
-        .addVows({})         // Add a 3rd batch
+        .addBatch({})         // Add the 1st batch
+        .addBatch({})         // Add a 2nd batch
+        .addBatch({})         // Add a 3rd batch
         .export(module);     // Export it
 
 Structure of a batch

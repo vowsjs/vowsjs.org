@@ -15,15 +15,16 @@
       <pre><%= File.read(Toto::Paths[:pages] + '/vows.html').strip %></pre>
     </section>
   </div>
+  <div style="clear: both"></div>
 </header>
 
 <section id="menu">
   <div class="content">
     <nav>
       <a href="#synopsis">synopsis</a>
-      <a href="#intro">intro</a>
+      <a href="#docs">guide</a>
+      <a href="#reference">reference</a>
       <a href="#about">about</a>
-      <a href="#synopsis">docs</a>
     </nav>
   </div>
 </section>
@@ -34,7 +35,7 @@
   </div>
 </section>
 
-<section id="doc">
+<section id="docs">
   <div class="content">
       <%= markdown File.read(Toto::Paths[:pages] + '/doc.md') %>
   </div>

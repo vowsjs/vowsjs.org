@@ -8,6 +8,28 @@
     <link rel="alternate" type="application/atom+xml" title="<%= title %> - feed" href="/index.xml" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title><%= title %></title>
+    <script type="text/javascript">
+      (function () {
+        var menu, init, docked;
+
+        window.onload = function () {
+          menu = document.getElementById('menu');
+          init = menu.offsetTop;
+
+          window.onscroll = function () {
+            if (!docked && (menu.offsetTop - document.body.scrollTop < 0)) {
+              menu.style.top = 0;
+              menu.style.position = 'fixed';
+              docked = true;
+            } else if (docked && document.body.scrollTop <= init) {
+              menu.style.position = 'absolute';
+              menu.style.top = init + 'px';
+              docked = false;
+            }
+          };
+        };
+      })();
+    </script>
   </head>
   <body>
     <section>

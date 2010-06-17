@@ -120,7 +120,8 @@ nav a {
 }
 
 #menu {
-  position: relative;
+  position: absolute;
+  width: 100%;
   z-index: 3;
   clear: both;
   display: block;
@@ -281,6 +282,7 @@ nav a {
   }
 }
 #synopsis {
+  padding-top: 30px;
   background-color: @darkest !important;
   .content {
     background-color: desaturate(lighten(@darkest, 3%), 5%);

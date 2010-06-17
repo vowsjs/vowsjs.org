@@ -179,22 +179,22 @@ nav a {
   }
   #example {
     pre {
+      text-shadow: 0 -1px 1px darken(@darkest, 3%);
       margin-top: 20px;
-      background-color: darken(@darkest, 2%);
+      background-color: desaturate(@darkest, 8%);
       border: 0;
       width: 400px;
-      color: @lightest;
+      color: lighten(@lightest, 2%);
       background-repeat: repeat;
       padding: 30px;
-      border: 2px solid @lightest;
+      border: 1px dashed @lightest;
       border-left: 0;
       line-height: 15px;
-      //.box-shadow(0, -3px, 15px, 0.3);
-      .box-shadow(0, 0px, 15px, 0.3);
+      .box-shadow(0, 0px, 15px, 0.5);
       .code;
       .border-radius(2px);
       .vow, #ok {
-        color: hsl(90, 30%, 50%);
+        color: hsl(90, 40%, 60%);
       }
       .vow.pending {
         color: hsl(190, 20%, 50%);  

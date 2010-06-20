@@ -53,7 +53,7 @@ a notion of topic *scope*. Let's look at an example:
           assert.equal (topic.id, 42);
         }
       }
-    } 
+    }
 
 In the example above, the value of the top-level topic is passed as an argument to the inner topic, in the same manner
 it's passed to the vows. For clarity, I named both arguments which refer to the outer topic as `store`.

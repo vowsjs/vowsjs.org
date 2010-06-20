@@ -7,6 +7,7 @@
 @lightest:     hsl(90, 20%, 90%);
 @highlight:    hsl(80, 50%, 90%);
 @red:          hsl(10, 60%, 40%);
+@alpha-red:    hsla(10, 60%, 40%, 0.5);
 
 .box-shadow (@x, @y, @blur, @alpha) {
   box-shadow:         @x @y @blur rgba(0, 0, 0, @alpha);
@@ -17,7 +18,17 @@
   border-radius: @radius;
   -moz-border-radius: @radius;
   -webkit-border-radius: @radius;
+}
 
+.border-radius (@radius, bottom) {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-top-right-radius: 0;
+  -moz-border-top-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+}
+.border-radius (@radius, right) {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   -moz-border-bottom-left-radius: 0;
@@ -84,7 +95,7 @@ code {
 }
 pre {
   padding: 0 30px;
-  .wrap();
+  .wrap;
 }
 blockquote {
   font-style: italic;
@@ -100,18 +111,28 @@ body > footer {
 nav {
   margin-left: 15px;
 }
-nav a {
+nav a, #dropdown li {
   display: inline-block;
   color: white;
   line-height: 42px;
   margin: 0;
   padding: 0px 15px;
-  text-shadow: -1px -1px 1px #555;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.5);
   text-decoration: none;
+  border: 2px solid transparent;
+  border-width: 0 2px;
   &:hover {
-    background-color: darken(@red, 10%);
+    .dark-red; 
     text-decoration: none;
   }
+}
+.dark-red {
+    border: 2px solid darken(@red, 25%);
+    border-left-color: darken(@red, 15%);
+    border-right-color: darken(@red, 15%);
+    border-bottom: 0;
+    border-top: 0;
+    background-color: darken(@red, 10%);
 }
 
 .content {
@@ -127,10 +148,54 @@ nav a {
   display: block;
   background-color: @red;
   height: 42px;
-  border-top: 2px solid lighten(@red, 20%);
-  border-bottom: 2px solid darken(@red, 15%);
-  .box-shadow(0, 0px, 10px, 0.3);
+  border-top: 2px solid lighten(@alpha-red, 20%);
+  border-bottom: 2px solid darken(@alpha-red, 15%);
+  .box-shadow(0, 1px, 8px, 0.6);
   -moz-box-shadow: 0 0 0 #000; // Because firefox sucks.
+
+  &.docked {
+    background-color: hsla(10, 60%, 40%, 0.4);
+  }
+  &:hover {
+    background-color: @red;
+  }
+
+  #dropdown {
+    margin: 0 0 0 116px;
+    padding: 0;
+    padding-top: 5px;
+    display: none;
+    width: 190px;
+    border-top: 2px solid @red;
+    color: @highlight;
+    border: 2px solid darken(@red, 25%);
+    border-left-color: darken(@red, 15%);
+    border-right-color: darken(@red, 15%);
+    border-top-width: 0;
+    background-color: darken(@red, 10%);
+    ul {
+      padding: 0px;  
+    }
+    li {
+      font-size: 14px;
+      display: block;
+      text-align: left;
+      padding: 0;
+      border: 0;
+      a {
+        display: block;
+        padding: 0px 15px;  
+        text-decoration: none;
+        color: white;  
+        &:hover {
+          background-color: darken(@red, 20%);
+          text-decoration: none;
+        }
+      }
+    }
+    .border-radius(5px, bottom);
+    .box-shadow(0, 6px, 8px, 0.5);
+  }
 }
 
 #main {
@@ -193,7 +258,7 @@ nav a {
       line-height: 15px;
       .box-shadow(0, 0px, 15px, 0.5);
       .code;
-      .border-radius(2px);
+      .border-radius(2px, right);
       .vow, #ok {
         color: hsl(90, 40%, 60%);
       }
@@ -205,6 +270,14 @@ nav a {
     float: left;
     font-size: 12px;
     width: 460px;
+  }
+}
+
+.report {
+  pre {
+    .vow, #ok {
+      color: hsl(90, 40%, 30%);
+    }
   }
 }
 
@@ -223,6 +296,7 @@ nav a {
     border-style: dashed;
     padding: 15px;
     margin: 15px 0;
+    font-size: 16px;
   }
   h1 {
     font-size: 48px;
@@ -231,10 +305,12 @@ nav a {
     margin-bottom: 30px;
   }
   h2 {
-    margin: 30px 0;
+    padding-top: 30px;
+    padding-bottom: 15px;
+    margin: 15px 0;
   }
   h3 {
-    margin: 10px 0;
+    margin: 15px 0;
   }
 }
 
@@ -257,6 +333,15 @@ nav a {
   }
 }
 
+td {
+  padding-right: 30px;  
+}
+
+#synopsis pre {
+    padding: 20px;
+    line-height: 18px;
+    font-size: 14px;
+}
 #reference, #synopsis {
   @bg: desaturate(darken(@darkest, 5%), 20%);
   text-shadow: 0 -1px 1px @bg;
@@ -268,9 +353,6 @@ nav a {
     .box-shadow(0, 5px, 5px, 0.4);
   }
   pre {
-    padding: 20px;
-    font-size: 14px;
-    line-height: 18px;
     background-color: @bg;
     border-color: darken(@light-yellow, 5%);
   }

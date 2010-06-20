@@ -144,6 +144,7 @@ an API to a library:
     exports.suite1 = vows.describe('suite one');
     exports.suite2 = vows.describe('suite two');
 
+
 ### So let's recap #
 
 *subject-test.js*
@@ -151,9 +152,9 @@ an API to a library:
     // A test suite, describing 'subject'
 
     vows.describe('subject') // Create the suite, describing 'subject'
-        .addBatch({})         // Add the 1st batch
-        .addBatch({})         // Add a 2nd batch
-        .addBatch({})         // Add a 3rd batch
+        .addBatch({})        // Add the 1st batch
+        .addBatch({})        // Add a 2nd batch
+        .addBatch({})        // Add a 3rd batch
         .export(module);     // Export it
 
 Structure of a batch
@@ -163,7 +164,7 @@ Structure of a batch
 
 » A *context* is an object with a *topic*, zero or more *vows* and zero or more *sub-contexts*.
 
-» A *vow* is a function which receives the *topic* as an argument, and runs assertions on it. 
+» A *vow* is a function which receives the *topic* as an argument, and runs assertions on it.
 
 With that in mind, we can imagine a structure like this:
 
@@ -204,8 +205,6 @@ Here's an example:
     }
 
 
-
-
 Assertions
 ----------
 
@@ -239,7 +238,6 @@ This reports the following error:
 Other useful assertion functions bundled with vows include `assert.match`, `assert.instanceOf`,
 `assert.include` and `assert.isEmpty`--head over to the [reference](/reference#assert) to get the full list.
 
-
 Writing asynchronous tests
 --------------------------
 
@@ -258,7 +256,7 @@ passed to the callback function. So how can we do that with *topics*? Take a loo
         assert.isObject (stat);       // We have a stat object
       },
       'is not empty': function (err, stat) {
-        assert.isNotZero (stat.size); // The file size is > 0   
+        assert.isNotZero (stat.size); // The file size is > 0
       }
     }
 
@@ -267,15 +265,143 @@ The key here is the special '`this.callback`' function, which is available insid
 When this function is *called*, it passes on the arguments it received to the test functions,
 one by one, as if the values were returned by the topic function itself.
 
-In essence, this allows us to decouple the callback from the async function call. It's equivalent to:
+In essence, this allows us to decouple the callback from the async function call.
 
-    fs.stat('~/FILE', function (err, stat) {
-        assert.isNull    (err,       'can be accessed');
-        assert.isObject  (stat,      'can be accessed');
-        assert.isNotZero (stat.size, 'is not empty');
-    });
-
-Except it allows Vows to keep track of all the asynchronous calls, and warn you if something
+This allows Vows to keep track of all the asynchronous calls, and warn you if something
 hasn't returned.
+
+Macros
+------
+
+Sometimes, it's useful to abstract tests which are used throughout the test suite. A *batch* in Vows,
+is a tree-like data structure--an Object literal to be precise. This proves to be pretty powerful, as you'll see.
+
+Macros are technique, not a feature.
+
+One of the things I have to test in the  majority of the code I write are HTTP status codes. So let's first look
+at the straightforward way of doing this, given an asynchronous `client` library:
+
+    { topic: function () {
+        client.get('/resources/42', this.callback);
+      },
+      'should respond with a 200 OK': function (e, res) {
+        assert.equal (res.status, 200);
+      }
+    }
+
+Not too bad. But we might have a hundred of these, if we're testing an API. So let's see what we can do with macros:
+
+    function assertStatus(code) {
+        return function (e, res) {
+            assert.equal (res.status, code);
+        };
+    }
+
+This is a function which takes a status code, and returns a function which tests for that status code. We can now
+improve our test like this:
+
+    { topic: function () {
+        client.get('/resources/42', this.callback);
+      },
+      'should respond with a 200 OK': assertStatus(200)
+    }
+
+Much better. How about the topic? Let's write a macro for our API calls:
+
+    var api = {
+        get: function (path) {
+            return function () {
+                client.get(path, this.callback);
+            };
+        }
+    };
+
+And rewrite our tests:
+
+    { topic: api.get('/resources/42'),
+      'should respond with a 200 OK': assertStatus(200)
+    }
+
+Fantastic. Here's a an example of what these macros could look like:
+
+    {   'GET /': {
+            topic: api.get('/'),
+            'shoud respond with a 200 OK': assertStatus(200)
+        },
+        'POST /': {
+            topic: api.post('/'),
+            'shoud respond with a 405 Method not allowed': assertStatus(405)
+        },
+        'GET /resources (no api-key)': {
+            topic: api.get('/resources'),
+            'shoud respond with a 403 Forbidden': assertStatus(403)
+        },
+        'GET /resources?apikey=af816e859c249fe'
+            topic: api.get('/resources?apikey=af816e859c249fe'),
+            'shoud return a 200 OK': assertStatus(200),
+            'should return a list of resources': function (res) {
+                assert.isArray (res.body);
+            }
+        }
+    }
+
+Can we push it further? Of course we can, and this is when it gets *really* interesting. I'm going to
+show you how you can generate contextual tests. If you haven't read the section about contexts,
+head over there now: [Contexts](/#contexts).
+
+Instead of having a separate function which generates a *topic*, and another one which generates
+a *vow*, we're going to have a function which generates a *context* which contains both a topic and a vow.
+
+The topic will perform a *contextual* request. This is the interesting part: we're going to parse
+the context description to generate the api requests. So the test will be encoded within its
+description. Let's look at a possible implementation:
+
+    //
+    // Send a request and check the response status.
+    //
+    function respondsWith(status) {
+        var context = {
+            topic: function () {
+                // Get the current context's name, such as "POST /"
+                // and split it at the space.
+                var req    = this.context.name.split(/ +/), // ["POST", "/"]
+                    method = name[0].toLowerCase(),         // "post"
+                    path   = name[1];                       // "/"
+
+                // Perform the contextual client request,
+                // with the above method and path.
+                client[method](path, this.callback);
+            }
+        };
+        // Create and assign the vow to the context.
+        // The description is generated from the expected status code
+        // and status name, from node's http module.
+        context['should respond with a ' + status + ' '
+               + http.STATUS_CODES[status]] = assertStatus(status);
+
+        return context;
+    }
+
+Now the first three contexts of our batch can be re-written as:
+
+    { 'GET  /':                   respondsWith(200),
+      'POST /':                   respondsWith(405),
+      'GET  /resources (no key)': respondsWith(403)
+    }
+
+And when run, we get:
+
+
+<div class="report"><pre class="report">
+GET  /
+  ✓ <span class="vow">should respond with a 200 OK</span>
+POST /
+  ✓ <span class="vow">should respond with a 405 Method Not Allowed</span>
+GET  /resources (no key)
+  ✓ <span class="vow">shoud respond with a 403 Forbidden</span>
+</pre></div>
+
+The fourth context is a little more complex, as it has two vows, but I'll let you figure that
+one out!
 
 

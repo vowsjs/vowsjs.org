@@ -7,17 +7,17 @@
     <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link rel="alternate" type="application/atom+xml" title="<%= title %> - feed" href="/index.xml" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><%= title %></title>
+    <title>Vows &laquo; Asynchronous BDD for Node</title>
     <script type="text/javascript">
       (function () {
         window.onload = function () {
-          var headers = document.querySelectorAll('#docs h2');
+          var headers = document.querySelectorAll('#docs h2, #synopsis h2');
           var menu = document.getElementById('menu');
           var init = menu.offsetTop;
           var docked;
 
           for (var i = 0; i < headers.length; i++) {
-            headers[i].id = headers[i].innerHTML.toLowerCase().replace(/ /g, '-');
+            headers[i].id = '-' + headers[i].innerHTML.toLowerCase().replace(/ /g, '-');
           }
 
           window.onscroll = function () {

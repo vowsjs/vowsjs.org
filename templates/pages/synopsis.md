@@ -1,5 +1,8 @@
+Intro
+=====
+
 Synopsis
-========
+--------
 
 Let's suppose we have a module called '`the-good-things`', with some fruit constructors
 in it:
@@ -72,4 +75,15 @@ Now write some tests in *the-good-things-test.js*:
 And run them:
 
     $ vows the-good-things-test.js
+
+Installing
+----------
+
+The easiest way to install Vows, is via [npm](http://github.com/isaacs/npm), the node package manager, as so:
+
+    $ npm install vows
+
+This will get you the latest stable version. If you want the bleeding edge, try:
+
+    $ npm install vows@latest
 

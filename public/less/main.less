@@ -161,7 +161,7 @@ nav a, #dropdown li {
   }
 
   #dropdown {
-    margin: 0 0 0 116px;
+    margin: 0 0 0 84px;
     padding: 0;
     padding-top: 5px;
     display: none;
@@ -305,9 +305,11 @@ nav a, #dropdown li {
     margin-bottom: 30px;
   }
   h2 {
+    margin: 30px 0;
+  }
+  p + h2, pre + h2, code + h2 {
+    border-top: 6px solid rgba(255, 255, 255, 0.1);
     padding-top: 30px;
-    padding-bottom: 15px;
-    margin: 15px 0;
   }
   h3 {
     margin: 15px 0;
@@ -330,6 +332,9 @@ nav a, #dropdown li {
   pre {
     background-color: @bg;
     border-color: darken(@light-yellow, 50%);
+  }
+  p + h2, pre + h2, code + h2 {
+    border-top-color: rgba(0, 0, 0, 0.1);
   }
 }
 

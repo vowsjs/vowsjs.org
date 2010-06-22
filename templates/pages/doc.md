@@ -83,7 +83,7 @@ Tests are added to suites in *batches*. This is done with the `addBatch` method.
 
 You can add as many batches to a suite as you want. Batches are executed *sequentially*.
 
-    suite.addBatch({/* 1st */}).addBatch({/* 2nd */}).addBatch({/* 3rd */});
+    suite.addBatch({/* run 1st */}).addBatch({/* 2nd */}).addBatch({/* 3rd */});
 
 Batches are useful when you want to test functionality in a certain order.
 

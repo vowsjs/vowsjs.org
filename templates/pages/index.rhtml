@@ -6,13 +6,16 @@
       <h3>
         There are two reasons why we might want asynchronous testing.
         The first, and obvious reason is that node.js is asynchronous,
-        and therefore our tests need to be. The second reason is to make test suites which target I/O
-        libraries run much faster.
+        and therefore our tests should be. The second reason is to make tests which target I/O
+        run much faster, by running them concurrently.
       </h3>
     </section>
 
     <section id="example">
-      <pre><%= File.read(Toto::Paths[:pages] + '/vows.html').strip %></pre>
+        <p>Write some vows, verify them:</p>
+        <pre class="command">$ vows test/*-test.js --spec</pre>
+        <p>Make sure you kept your word.</p>
+        <pre><%= File.read(Toto::Paths[:pages] + '/vows.html').strip %></pre>
     </section>
   </div>
   <div style="clear: both"></div>
@@ -30,10 +33,8 @@
     </nav>
     <div id="dropdown">
       <ul>
-        <li><a href="#-introduction">Introduction</a></li>
-        <li><a href="#-how-topics-work">How topics work</a></li>
         <li><a href="#-structure-of-a-test-suite">Structure of a test suite</a></li>
-        <li><a href="#-structure-of-a-batch">Structure of a batch</a></li>
+        <li><a href="#-how-topics-work">How topics work</a></li>
         <li><a href="#-writing-asynchronous-tests">Asynchronous Testing</a></li>
         <li><a href="#-assertions">Assertions</a></li>
         <li><a href="#-macros">Macros</a></li>
@@ -63,6 +64,9 @@
 <section id="about">
   <div class="content">
     <%= markdown File.read(Toto::Paths[:pages] + '/about.md') %>
+    <footer>
+        <p>powered by <a href="http://cloudhead.io/toto">toto</a>, <a href="http://github.com/cloudhead/less.js">LESS</a> and <a href="http://github.com/cloudhead/hijs">hijs</a></p>
+        <p id="copy">Copyright &copy; Alexis Sellier 2010</p>
+    </footer>
   </div>
 </section>
-<footer></footer>

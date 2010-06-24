@@ -70,6 +70,7 @@ nav, header, footer, section, article {
 }
 a {
   color: #b83000;
+  text-decoration: none;
 }
 h1 a {
   color: black;
@@ -198,67 +199,77 @@ nav a, #dropdown li {
   }
 }
 
+#main, #about {
+  background-color: @light-green;
+}
+#main #intro, #about .content {
+  background-color: lighten(@light-green, 25%);
+  font-family: 'Droid Serif', 'Georgia';
+  .box-shadow(1px, 0px, 6px, 0.5);
+}
 #main {
   margin: 0 auto;
   width: 100%;
-  background-color: @light-green;
   border-top: 8px solid darken(@light-green, 5%);
 
   #intro {
-    background-color: lighten(@light-green, 25%);
     float: left;
     margin-top: -8px;
 
-    height: 380px;
+    height: 400px;
     position: relative;
     z-index: 2;
-    font-family: 'Droid Serif', 'Georgia';
     width: 420px;
     padding: 45px 20px 23px 30px;
     border: 2px dashed darken(@light-green, 10%);
-    .box-shadow(1px, 0px, 6px, 0.5);
     border-bottom: 0;
     border-top: 0;
-  }
-  h1 {
-    text-shadow: 1px 1px 1px white;
-    font-family: 'Lobster';
-    color: darken(@dark, 4%);
-    font-size: 96px;
-    font-weight: normal;
-  }
-  h2 {
-    span {
-      color: @red;  
+    h1 {
+      text-shadow: 1px 1px 1px white;
+      font-family: 'Lobster';
+      color: darken(@dark, 4%);
+      font-size: 96px;
+      font-weight: normal;
     }
-    color: @medium;
-    margin: 20px 0;
-    font-size: 28px;
-    line-height: 1.2em;
-  }
-  h3 {
-    color: @medium;
-    line-height: 1.4em;
-    margin: 30px 0 15px 0;
-    font-size: 1em;
-    text-shadow: 0px 0px 0px @lightest;
+    h2 {
+      span {
+        color: @red;  
+      }
+      color: @medium;
+      margin: 20px 0;
+      font-size: 28px;
+      line-height: 1.3em;
+    }
+    h3 {
+      color: @medium;
+      line-height: 1.4em;
+      margin: 30px 0 15px 0;
+      font-size: 1em;
+      text-shadow: 0px 0px 0px @lightest;
+    }
   }
   #example {
+    p {
+      font-size: 16px;
+      color: @medium;
+      font-weight: bold;
+      text-shadow: 0px 1px 1px @lightest;
+    }
+    pre.command {
+      padding: 15px 25px;  
+    }
     pre {
       text-shadow: 0 -1px 1px darken(@darkest, 3%);
-      margin-top: 20px;
       background-color: desaturate(@darkest, 8%);
-      border: 0;
       width: 400px;
       color: lighten(@lightest, 2%);
       background-repeat: repeat;
-      padding: 30px;
+      padding: 25px;
       border: 1px dashed @lightest;
-      border-left: 0;
       line-height: 15px;
       .box-shadow(0, 0px, 15px, 0.5);
       .code;
-      .border-radius(2px, right);
+      .border-radius(2px);
       .vow, #ok {
         color: hsl(90, 40%, 60%);
       }
@@ -267,7 +278,7 @@ nav a, #dropdown li {
       }
       #time { color: #aaa }
     }
-    float: left;
+    float: right;
     font-size: 12px;
     width: 460px;
   }
@@ -281,7 +292,7 @@ nav a, #dropdown li {
   }
 }
 
-#synopsis, #docs, #reference {
+#synopsis, #docs, #reference, #about {
   .content {
     width: 870px;
     padding: 45px;
@@ -375,4 +386,13 @@ td {
   .content {
     background-color: desaturate(lighten(@darkest, 3%), 5%);
   }
+}
+#about footer {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 6px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.4);
+  #copy { font-size: 12px }
 }

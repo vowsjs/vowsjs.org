@@ -1,13 +1,120 @@
 Guide
 =====
 
+To understand Vows, we're going to start with a general overview of the different components involved in writing tests,
+and then go through some of them in more detail.
+
+Structure of a test suite
+-------------------------
+
+Test suites in Vows are the largest unit of tests. The convention is to have one test suite
+per file, and have the suite's subject match the file name. Test suites are created with `vows.describe`.
+
+    var suite = vows.describe('subject');
+
+Tests are added to suites in *batches*. This is done with the `addBatch` method.
+
+    suite.addBatch({});
+
+You can add as many batches to a suite as you want. Batches are executed *sequentially*.
+
+    suite.addBatch({/* run 1st */}).addBatch({/* 2nd */}).addBatch({/* 3rd */});
+
+Chaining batches is useful when you want to test functionality in a certain order.
+
+Batches contain *contexts*, which describe different components and states you want to test.
+
+    suite.addBatch({
+       'A context': {},
+       'Another context': {}
+    });
+
+Contexts are executed *in parallel*, they are fully asynchronous. The order in which they finish is therefore undefined.
+
+Contexts usually contain *topics* and *vows*, which in combination define your tests.
+
+    suite.addBatch({
+       'A context': {
+            topic: function () {/* Do something async */},
+            'I am a vow': function (topic) {
+                /* Test the result of the topic */
+            }
+        },
+       'Another context': {}
+    });
+
+Contexts can contain *sub-contexts* which get executed as soon as the parent context finishes:
+
+    suite.addBatch({
+       'A context': {
+            topic: function () {/* Do something async */},
+            'I am a vow': function (topic) {
+                /* Test the result of the topic */
+            }
+            'A sub-context': {/* Executed when the tests above finish running */}   
+        },
+       'Another context': {/* Executed in parallel to 'A context' */}
+    });
+
+
+So to recap:
+
+» A *Suite* is an object which contains zero or more *batches*, and can be executed or exported.
+
+» A *batch* is an object literal, representing a structure of nested *contexts*.
+
+» A *context* is an object with a *topic*, zero or more *vows* and zero or more *sub-contexts*.
+
+» A *vow* is a function which receives the *topic* as an argument, and runs assertions on it.
+
+With that in mind, we can imagine a structure like this:
+
+    Suite {
+        Batch {
+            Context {
+                Topic,
+                Context {
+                    Topic, Vow, Vow, Vow,
+                    Context {
+                        Topic, Vow
+                    }
+                }
+            }
+        },
+        Batch {}
+    }
+
+Here's an example:
+
+    vows.describe('Array').addBatch({                      // Batch
+        'An array': {                                      // Context
+            'with 3 elements': {                           // Sub-Context
+                topic: [1, 2, 3],                          // Topic
+
+                'has a length of 3': function (topic) {    // Vow
+                    assert.equal(topic.length, 3);
+                }
+            },
+            'with zero elements': {                        // Sub-Context
+                topic: [],                                 // Topic
+
+                'has a length of 0': function (topic) {    // Vow
+                    assert.equal(topic.length, 0);
+                },
+                'returns *undefined*, when `pop()`ed': function (topic) {
+                    assert.isUndefined(topic.pop());
+                }
+            }
+        }
+    });
+
 How topics work
 ---------------
 
-Understanding *topics* is the key to understanding how Vows works. Unlike other testing frameworks,
+Understanding *topics* is one of the key to understanding Vows. Unlike other testing frameworks,
 Vows forces a clear separation between the element which is tested, the *topic*, and the actual tests, the *vows*.
 
-Let's start with a simple example:
+Let's start with a simple example of a context:
 
     { topic: 42,
       'should be equal to 42': function (topic) {
@@ -67,27 +174,8 @@ Note that the scoping isn't limited to a single level. Consider:
 So the parent topics are passed along to each topic function in the certain order: the immediate parent is always the first
 argument (`a`), and the outer topics follow (`b`, then `c`), like the layers of an onion.
 
-Structure of a test suite
--------------------------
-
-### Putting it together #
-
-Test suites in Vows are the largest unit of tests. The convention is to have one test suite
-per file, and have the suite's subject match the file name. Test suites are created with `vows.describe`.
-
-    var suite = vows.describe('subject');
-
-Tests are added to suites in *batches*. This is done with the `addBatch` method.
-
-    suite.addBatch({});
-
-You can add as many batches to a suite as you want. Batches are executed *sequentially*.
-
-    suite.addBatch({/* run 1st */}).addBatch({/* 2nd */}).addBatch({/* 3rd */});
-
-Batches are useful when you want to test functionality in a certain order.
-
-### Running the suite #
+Running a suite
+---------------
 
 The simplest way to run a test suite, is with the `run` method:
 
@@ -144,7 +232,6 @@ an API to a library:
     exports.suite1 = vows.describe('suite one');
     exports.suite2 = vows.describe('suite two');
 
-
 ### So let's recap #
 
 *subject-test.js*
@@ -157,53 +244,61 @@ an API to a library:
         .addBatch({})        // Add a 3rd batch
         .export(module);     // Export it
 
-Structure of a batch
---------------------
+Writing asynchronous tests
+--------------------------
 
-» A *batch* is an object literal, representing a structure of nested *contexts*.
+> Before diving into asynchronous testing, make sure you read the section about *topics*.
 
-» A *context* is an object with a *topic*, zero or more *vows* and zero or more *sub-contexts*.
+Let's say we want to test that a certain file exists, and satisfies a couple criteria.
 
-» A *vow* is a function which receives the *topic* as an argument, and runs assertions on it.
+As you know, we don't 'return' a value from an asynchronous function call--the value is
+passed to the callback function. So how can we do that with *topics*? Take a look:
 
-With that in mind, we can imagine a structure like this:
-
-    Batch {
-        Context {
-            Topic,
-            Context {
-                Topic, Vow, Vow, Vow,
-                Context {
-                    Topic, Vow
-                }
-            }
-        }
+    { topic: function () {
+        fs.stat('~/FILE', this.callback);
+      },
+      'can be accessed': function (err, stat) {
+        assert.isNull   (err);        // We have no error
+        assert.isObject (stat);       // We have a stat object
+      },
+      'is not empty': function (err, stat) {
+        assert.isNotZero (stat.size); // The file size is > 0
+      }
     }
 
-Here's an example:
+The key here is the special '`this.callback`' function, which is available inside all topics.
 
-    {                                                      // Batch
-        'An array': {                                      // Context
-            'with 3 elements': {                           // Sub-Context
-                topic: [1, 2, 3],                          // Topic
+When `this.callback` is *called*, it passes on the arguments it received to the test functions,
+one by one, as if the values were returned by the topic function itself.
 
-                'has a length of 3': function (topic) {    // Vow
-                    assert.equal(topic.length, 3);
-                }
-            },
-            'with zero elements': {                        // Sub-Context
-                topic: [],                                 // Topic
+In essence, this allows us to decouple the callback from the async function call.
 
-                'has a length of 0': function (topic) {    // Vow
-                    assert.equal(topic.length, 0);
-                },
-                'returns *undefined*, when `pop()`ed': function (topic) {
-                    assert.isUndefined(topic.pop());
-                }
-            }
-        }
+This is how Vows keeps track of all the asynchronous calls, and can warn you if something
+hasn't returned.
+
+### Promises #
+
+Vows also supports promise-based async out of the box, so if that works better for your purpose,
+you can return an instance of `EventEmitter` from a topic, and the tests will be run when it
+emits a `"success"` or `"error"` event:
+
+    { topic: function () {
+        var promise = new(events.EventEmitter);
+
+        fs.stat('~/FILE', function (e, res) {
+            if (e) { promise.emit('error', e) }
+            else   { promise.emit('success', res) }
+        });
+        return promise;
+      },
+      'can be accessed': function (err, stat) {
+        assert.isNull   (err);        // We have no error
+        assert.isObject (stat);       // We have a stat object
+      },
+      'is not empty': function (err, stat) {
+        assert.isNotZero (stat.size); // The file size is > 0
+      }
     }
-
 
 Assertions
 ----------
@@ -238,45 +333,11 @@ This reports the following error:
 Other useful assertion functions bundled with vows include `assert.match`, `assert.instanceOf`,
 `assert.include` and `assert.isEmpty`--head over to the [reference](/reference#assert) to get the full list.
 
-Writing asynchronous tests
---------------------------
-
-> Before diving into asynchronous testing, make sure you read the section about *topics*.
-
-Let's say we want to test that a certain file exists, and satisfies a couple criteria.
-
-As you know, we don't 'return' a value from an asynchronous function call--the value is
-passed to the callback function. So how can we do that with *topics*? Take a look:
-
-    { topic: function () {
-        fs.stat('~/FILE', this.callback);
-      },
-      'can be accessed': function (err, stat) {
-        assert.isNull   (err);        // We have no error
-        assert.isObject (stat);       // We have a stat object
-      },
-      'is not empty': function (err, stat) {
-        assert.isNotZero (stat.size); // The file size is > 0
-      }
-    }
-
-The key here is the special '`this.callback`' function, which is available inside all topics.
-
-When this function is *called*, it passes on the arguments it received to the test functions,
-one by one, as if the values were returned by the topic function itself.
-
-In essence, this allows us to decouple the callback from the async function call.
-
-This allows Vows to keep track of all the asynchronous calls, and warn you if something
-hasn't returned.
-
 Macros
 ------
 
 Sometimes, it's useful to abstract tests which are used throughout the test suite. A *batch* in Vows,
 is a tree-like data structure--an Object literal to be precise. This proves to be pretty powerful, as you'll see.
-
-Macros are technique, not a feature.
 
 One of the things I have to test in the  majority of the code I write are HTTP status codes. So let's first look
 at the straightforward way of doing this, given an asynchronous `client` library:
@@ -346,8 +407,7 @@ Fantastic. Here's a an example of what these macros could look like:
     }
 
 Can we push it further? Of course we can, and this is when it gets *really* interesting. I'm going to
-show you how you can generate contextual tests. If you haven't read the section about contexts,
-head over there now: [Contexts](/#contexts).
+show you how you can generate contextual tests.
 
 Instead of having a separate function which generates a *topic*, and another one which generates
 a *vow*, we're going to have a function which generates a *context* which contains both a topic and a vow.
@@ -390,7 +450,6 @@ Now the first three contexts of our batch can be re-written as:
     }
 
 And when run, we get:
-
 
 <div class="report"><pre class="report">
 GET  /

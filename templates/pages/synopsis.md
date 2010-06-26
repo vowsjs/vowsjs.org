@@ -4,14 +4,49 @@ Intro
 Synopsis
 --------
 
-Let's suppose we have a module called '`the-good-things`', with some fruit constructors
+A simple example, describing division by zero:
+
+    // division-by-zero-test.js
+
+    var vows = require('vows'),
+        assert = require('assert');
+
+    vows.describe('Division by Zero').addBatch({
+        'when dividing a number by zero': {
+            topic: function () { return 42 / 0 },
+
+            'we get Infinity': function (topic) {
+                assert.equal (topic, Infinity);
+            }
+        },
+        'but when dividing zero by zero': {
+            topic: function () { return 0 / 0 },
+
+            'we get a value which': {
+                'is not a number': function (topic) {
+                    assert.isNaN (topic);
+                },
+                'is not equal to itself': function (topic) {
+                    assert.notEqual (topic, topic);
+                }
+            }
+        }
+    }).run();
+
+And run it:
+
+    $ node division-by-zero-test.js
+
+---
+
+And now, a little more involved example--let's suppose we have a module called '`the-good-things`', with some fruit constructors
 in it:
 
     exports.Strawberry = function () {
-        this.color = '#ff0000';  
+        this.color = '#ff0000';
     };
     exports.Strawberry.prototype = {
-        isTasty: function () { return true }  
+        isTasty: function () { return true }
     };
 
     exports.Banana = function () {
@@ -20,7 +55,7 @@ in it:
     exports.Banana.prototype = {
         peel: function (callback) {
             process.nextTick(function () {
-                callback(new(exports.PeeledBanana));
+                callback(null, new(exports.PeeledBanana));
             });
         },
         peelSync: function () { return new(exports.PeeledBanana) }
@@ -47,7 +82,7 @@ Now write some tests in *the-good-things-test.js*:
                 assert.equal (strawberry.color, '#ff0000');
             },
             'and tasty': function (strawberry) {
-                assert.isTrue (strawberry.isTasty());    
+                assert.isTrue (strawberry.isTasty());
             }
         },
         'A banana': {
@@ -58,15 +93,15 @@ Now write some tests in *the-good-things-test.js*:
                     return banana.peelSync();
                 },
                 'returns a `PeeledBanana`': function (result) {
-                    assert.instanceOf (result, PeeledBanana); 
+                    assert.instanceOf (result, PeeledBanana);
                 }
             }
             'when peeled *asynchronously*': {
                 topic: function (banana) {
                     banana.peel(this.callback);
                 },
-                'results in a `PeeledBanana`': function (result) {
-                    assert.instanceOf (result, PeeledBanana); 
+                'results in a `PeeledBanana`': function (err, result) {
+                    assert.instanceOf (result, PeeledBanana);
                 }
             }
         }

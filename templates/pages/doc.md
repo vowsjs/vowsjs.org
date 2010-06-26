@@ -84,7 +84,7 @@ With that in mind, we can imagine a structure like this:
         Batch {}
     }
 
-Here's an example:
+Here's an annotated example:
 
     vows.describe('Array').addBatch({                      // Batch
         'An array': {                                      // Context

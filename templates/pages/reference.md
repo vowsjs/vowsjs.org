@@ -6,15 +6,21 @@ Test runner
 
     vows [FILE, ...] [options]
 
-### Running tests #
+Running specific tests
 
     $ vows test-1.js test-2.js
     $ vows tests/*
+
+Running all tests in your *test/* or *spec/* folder
+
+    $ vows
 
 Watch mode
 
     $ vows -w
     $ vows --watch
+
+---
 
 ### Options #
 
@@ -76,6 +82,9 @@ Assertion functions
     assert.notEqual       (4, 2);
     assert.strictNotEqual (1, true);
 
+    assert.deepEqual      ([4, 2], [4, 2]);
+    assert.notDeepEqual   ([4, 2], [2, 4]);
+
 ### type #
 
     assert.isFunction (function () {});
@@ -124,7 +133,7 @@ Assertion functions
 
 ### exceptions #
 
-- assert.throws
-- assert.doesNotThrow
+    assert.throws(function () { x + x }, ReferenceError);
+    assert.doesNotThrow(function () { 1 + 1 }, Error);
 
 

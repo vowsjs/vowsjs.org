@@ -47,17 +47,21 @@ Contexts can contain *sub-contexts* which get executed as soon as the parent con
 
     suite.addBatch({
        'A context': {
-            topic: function () {/* Do something async */},
-            'I am a vow': function (topic) {
-                /* Test the result of the topic */
-            }
-            'A sub-context': {/* Executed when the tests above finish running */}   
-        },
-       'Another context': {/* Executed in parallel to 'A context' */}
+           topic: function () {/* Do something async */},
+           'I am a vow': function (topic) {
+               /* Test the result of the topic */
+           },
+           'A sub-context': {
+               /* Executed when the tests above finish running */
+           }
+       },
+       'Another context': {
+           /* Executed in parallel to 'A context' */
+        }
     });
 
 
-So to recap:
+### Summary #
 
 » A *Suite* is an object which contains zero or more *batches*, and can be executed or exported.
 
@@ -69,22 +73,11 @@ So to recap:
 
 » A *vow* is a function which receives the *topic* as an argument, and runs assertions on it.
 
-With that in mind, we can imagine a structure like this:
+With that in mind, we can imagine the following grammar:
 
-    Suite {
-        Batch {
-            Context {
-                Topic,
-                Context {
-                    Topic, Vow, Vow, Vow,
-                    Context {
-                        Topic, Vow
-                    }
-                }
-            }
-        },
-        Batch {}
-    }
+    Suite   → Batch*
+    Batch   → Context*
+    Context → Topic? Vow* Context*
 
 Here's an annotated example:
 
@@ -388,7 +381,7 @@ This reports the following error:
     expected [1, 2, 3] to have 5 elements
 
 Other useful assertion functions bundled with vows include `assert.match`, `assert.instanceOf`,
-`assert.include` and `assert.isEmpty`--head over to the [reference](/reference#assert) to get the full list.
+`assert.include` and `assert.isEmpty`--head over to the [reference](/#reference) to get the full list.
 
 Macros
 ------

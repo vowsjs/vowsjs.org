@@ -220,6 +220,7 @@ hr {
   .box-shadow(1px, 0px, 6px, 0.5);
 }
 #docs .content {
+    border-top: 1px solid @light-green;
   .box-shadow(0, 5px, 5px, 0.4);
 }
 #main {
@@ -355,19 +356,16 @@ hr {
 }
 
 #installing {
-  @bg: lighten(@light-yellow, 5%);
-  color: lighten(@darkest, 10%);
+  color: @darkest;
   background-color: darken(@light-yellow, 10%);
-  h1 {
-  }
   .content {
     clear: both;
     border-color: transparent;
-    background-color: @light-yellow;
+    background-color: lighten(@light-yellow, 2%);
     .box-shadow(0, 5px, 5px, 0.4);
   }
   pre {
-    background-color: @bg;
+    background-color: @highlight;
     border-color: darken(@light-yellow, 50%);
   }
   p + h2, pre + h2, code + h2 {

@@ -26,7 +26,7 @@
     <nav>
       <a href="#intro">intro</a>
       <a href="#docs" id="guide-link">guide</a>
-      <a href="#-installing">installing</a>
+      <a href="#installing">installing</a>
       <a href="#reference">reference</a>
       <a href="http://github.com/cloudhead/vows">source</a>
       <a href="#about">about</a>
@@ -46,6 +46,12 @@
 <section id="synopsis">
   <div class="content">
     <%= markdown File.read(Toto::Paths[:pages] + '/synopsis.md') %>
+  </div>
+</section>
+
+<section id="installing">
+  <div class="content">
+    <%= markdown File.read(Toto::Paths[:pages] + '/installing.md') %>
   </div>
 </section>
 

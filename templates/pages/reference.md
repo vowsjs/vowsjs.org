@@ -1,6 +1,8 @@
 Reference
 =========
 
+The CLI and assertion module are documented here.
+
 Test runner
 -----------
 

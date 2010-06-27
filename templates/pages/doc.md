@@ -63,7 +63,9 @@ So to recap:
 
 » A *batch* is an object literal, representing a structure of nested *contexts*.
 
-» A *context* is an object with a *topic*, zero or more *vows* and zero or more *sub-contexts*.
+» A *context* is an object with an optional *topic*, zero or more *vows* and zero or more *sub-contexts*.
+
+» A *topic* is either a value or a function which can execute asynchronous code.
 
 » A *vow* is a function which receives the *topic* as an argument, and runs assertions on it.
 
@@ -111,7 +113,7 @@ Here's an annotated example:
 How topics work
 ---------------
 
-Understanding *topics* is one of the key to understanding Vows. Unlike other testing frameworks,
+Understanding *topics* is one of the keys to understanding Vows. Unlike other testing frameworks,
 Vows forces a clear separation between the element which is tested, the *topic*, and the actual tests, the *vows*.
 
 Let's start with a simple example of a context:
@@ -131,7 +133,7 @@ Simple enough. Now let's look at an equivalent example, written differently:
       }
     }
 
-Same thing. Topics can be functions too. Now what if we have multiple vows?
+Same thing. Topics can be functions too. The return value becomes the topic. Now what if we have multiple vows?
 
     { topic: function () { return 42 },
       'should be a number': function (topic) {
@@ -207,7 +209,7 @@ Vows has a test runner called `vows`, which you can use to run multiple test sui
 To make use of it, you need to export your tests, instead of just running them. There's a couple
 of ways to do that, the easiest is through the `export` method:
 
-*subject-test.js*
+    // subject-test.js
 
     vows.describe('subject').addBatch({/* ... */}).export(module);
 
@@ -234,8 +236,7 @@ an API to a library:
 
 ### So let's recap #
 
-*subject-test.js*
-
+    // subject-test.js
     // A test suite, describing 'subject'
 
     vows.describe('subject') // Create the suite, describing 'subject'
@@ -276,6 +277,9 @@ In essence, this allows us to decouple the callback from the async function call
 This is how Vows keeps track of all the asynchronous calls, and can warn you if something
 hasn't returned.
 
+> Note that topics which make use of '`this.callback`' must not return anything. And likewise, topics
+which do not return anything must make use of '`this.callback`'.
+
 ### Promises #
 
 Vows also supports promise-based async out of the box, so if that works better for your purpose,
@@ -299,6 +303,59 @@ emits a `"success"` or `"error"` event:
         assert.isNotZero (stat.size); // The file size is > 0
       }
     }
+
+### Order of execution and parallelism #
+
+We talked about how batches and contexts are executed briefly,
+but it's now time to delve into it in more detail:
+
+    { topic: function () {
+        fs.stat('~/FILE', this.callback);
+      },
+      'after a successful `fs.stat`': {
+        topic: function (stat) {
+          fs.open('~/FILE', "r", stat.mode, this.callback);
+        },
+        'after a successful `fs.open`': {
+          topic: function (fd, stat) {
+            fs.read(fd, stat.size, 0, "utf8", this.callback);
+          },
+          'we can `fs.read` to get the file contents': function (data) {
+            assert.isString (data);
+          }
+        }
+      }
+    }
+
+In the example above, we make use of nested contexts to mimic nested callbacks. As you can tell,
+the result of the parent topic is passed down to its children, as arguments.
+
+This example as a whole is therefore mostly sequential, while remaining asynchronous.
+
+---
+
+Now let's look at an example which uses parallel tests to check for some devices:
+
+    { '/dev/stdout': {
+        topic:    function () { path.exists('/dev/stdout', this.callback) },
+        'exists': function (result) { assert.isTrue(result) }
+      },
+      '/dev/tty': {
+        topic:    function () { path.exists('/dev/tty', this.callback) },
+        'exists': function (result) { assert.isTrue(result) }
+      },
+      '/dev/null': {
+        topic:    function () { path.exists('/dev/null', this.callback) },
+        'exists': function (result) { assert.isTrue(result) }
+      }
+    }
+
+So in this case, the tests can finish in any order, and must not rely on each other. The test
+suite will exit when the last I/O call completes, and the assertions for it are run.
+
+In other words, *sibling contexts* are executed in parallel, while *nested contexts* are
+executed sequentially. Note that this all happens asynchronously, so while some contexts
+may be waiting for a parent context to finish, sibling contexts can still execute in the meantime.
 
 Assertions
 ----------

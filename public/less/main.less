@@ -123,7 +123,7 @@ nav a, #dropdown li {
   border: 2px solid transparent;
   border-width: 0 2px;
   &:hover {
-    .dark-red; 
+    .dark-red;
     text-decoration: none;
   }
 }
@@ -175,7 +175,7 @@ nav a, #dropdown li {
     border-top-width: 0;
     background-color: darken(@red, 10%);
     ul {
-      padding: 0px;  
+      padding: 0px;
     }
     li {
       font-size: 14px;
@@ -185,9 +185,9 @@ nav a, #dropdown li {
       border: 0;
       a {
         display: block;
-        padding: 0px 15px;  
+        padding: 0px 15px;
         text-decoration: none;
-        color: white;  
+        color: white;
         &:hover {
           background-color: darken(@red, 20%);
           text-decoration: none;
@@ -206,13 +206,21 @@ hr {
   border: 0;
 }
 
-#main, #about {
+#main, #about, #docs {
+  color: @darkest;
   background-color: @light-green;
+  pre {
+    border-color: darken(@highlight, 35%);
+    background-color: lighten(@highlight, 5%);
+  }
 }
-#main #intro, #about .content {
+#main #intro, #about .content, #docs .content {
   background-color: lighten(@light-green, 25%);
   font-family: 'Droid Serif', 'Georgia';
   .box-shadow(1px, 0px, 6px, 0.5);
+}
+#docs .content {
+  .box-shadow(0, 5px, 5px, 0.4);
 }
 #main {
   margin: 0 auto;
@@ -240,7 +248,7 @@ hr {
     }
     h2 {
       span {
-        color: @red;  
+        color: @red;
       }
       color: @medium;
       margin: 20px 0;
@@ -263,7 +271,7 @@ hr {
       text-shadow: 0px 1px 1px @lightest;
     }
     pre.command {
-      padding: 15px 25px;  
+      padding: 15px 25px;
     }
     pre {
       text-shadow: 0 -1px 1px darken(@darkest, 3%);
@@ -281,7 +289,7 @@ hr {
         color: hsl(90, 40%, 60%);
       }
       .vow.pending {
-        color: hsl(190, 20%, 50%);  
+        color: hsl(190, 20%, 50%);
       }
       #time { color: #aaa }
     }
@@ -299,7 +307,7 @@ hr {
   }
 }
 
-#synopsis, #docs, #reference, #about {
+#synopsis, #docs, #reference, #about, #installing {
   .content {
     width: 870px;
     padding: 45px;
@@ -329,17 +337,28 @@ hr {
     border-top: 6px solid rgba(255, 255, 255, 0.1);
     padding-top: 30px;
   }
+  pre + h3 {
+    margin-top: 30px;
+  }
   h3 {
     margin: 15px 0;
   }
 }
 
+#about, #docs {
+  p + h2, pre + h2, code + h2 {
+    border-top: 6px solid rgba(0, 0, 0, 0.1);
+  }
+  hr {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
 
-#docs {
+#installing {
   @bg: lighten(@light-yellow, 5%);
   color: lighten(@darkest, 10%);
   background-color: darken(@light-yellow, 10%);
-  h1 { 
+  h1 {
   }
   .content {
     clear: both;
@@ -357,7 +376,7 @@ hr {
 }
 
 td {
-  padding-right: 30px;  
+  padding-right: 30px;
 }
 
 #synopsis pre {
@@ -383,8 +402,16 @@ td {
     .string, .regexp { color: desaturate(@light-green, 15%) }
     .keyword { color: hsl(40, 40%, 60%); font-weight: normal }
     .comment { color: rgba(255, 255, 255, 0.2) }
-    .number { color: lighten(@red, 10%) }
+    .number { color: @red }
     .class, .special { color: hsl(190, 20%, 50%) }
+  }
+  a {
+    color: @light-yellow;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    &:hover {
+      text-decoration: none;
+      border-bottom: 1px dashed @light-yellow;
+    }
   }
 }
 #synopsis {

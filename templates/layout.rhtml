@@ -11,13 +11,16 @@
     <script type="text/javascript">
       (function () {
         window.onload = function () {
-          var headers = document.querySelectorAll('#docs h2, #synopsis h2');
           var menu = document.getElementById('menu');
           var init = menu.offsetTop;
           var docked;
 
-          for (var i = 0; i < headers.length; i++) {
-            headers[i].id = '-' + headers[i].innerHTML.toLowerCase().replace(/ /g, '-');
+          if (document.querySelectorAll) {
+              var headers = document.querySelectorAll('#docs h2, #synopsis h2');
+
+              for (var i = 0; i < headers.length; i++) {
+                headers[i].id = '-' + headers[i].innerHTML.toLowerCase().replace(/ /g, '-');
+              }
           }
 
           window.onscroll = function () {

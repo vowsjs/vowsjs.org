@@ -17,6 +17,7 @@ Here's a simple example, describing 'division by zero':
     var vows = require('vows'),
         assert = require('assert');
 
+    // Create a Test Suite
     vows.describe('Division by Zero').addBatch({
         'when dividing a number by zero': {
             topic: function () { return 42 / 0 },
@@ -37,7 +38,7 @@ Here's a simple example, describing 'division by zero':
                 }
             }
         }
-    }).run();
+    }).run(); // Run it
 
 And run it:
 
@@ -111,9 +112,9 @@ Now write some tests in *the-good-things-test.js*:
                 }
             }
         }
-    }).export(module);
+    }).export(module); // Export the Suite
 
-And run them:
+And run them with the test runner:
 
     $ vows the-good-things-test.js
 

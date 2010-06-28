@@ -496,3 +496,15 @@ td {
 #about footer #copy {
   font-size: 12px;
 }
+#github {
+  width: 14px;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.5);
+  padding: 0 1px;
+  margin-left: 2px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}

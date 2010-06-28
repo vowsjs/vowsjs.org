@@ -8,7 +8,7 @@ framework for [Node.js](http://nodejs.org).
 Vows was built from the ground up to test asynchronous code. It executes your tests in parallel when it makes sense,
 and sequentially when there are dependencies.
 
-Emphasis was put onspeed of execution, clarity and user experience.
+Emphasis was put on speed of execution, clarity and user experience.
 
 Here's a simple example, describing 'division by zero':
 

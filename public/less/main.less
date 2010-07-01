@@ -209,16 +209,16 @@ hr {
 #main, #about, #docs {
   color: @darkest;
   background-color: @light-green;
-  pre {
+  pre, code {
     border-color: darken(@highlight, 35%);
     background-color: lighten(@highlight, 5%);
   }
 }
 #main #intro, #about .content, #docs .content {
   background-color: lighten(@light-green, 25%);
-  font-family: 'Droid Serif', 'Georgia';
   .box-shadow(1px, 0px, 6px, 0.5);
 }
+
 #docs .content {
     border-top: 1px solid @light-green;
   .box-shadow(0, 5px, 5px, 0.4);
@@ -227,6 +227,7 @@ hr {
   margin: 0 auto;
   width: 100%;
   border-top: 6px solid rgba(0, 0, 0, 0.1);
+  font-family: 'Droid Serif', 'Georgia';
 
   #intro {
     float: left;
@@ -313,14 +314,21 @@ hr {
     width: 870px;
     padding: 45px;
   }
+  code { font-size: 16px }
   margin: 0 auto;
-  font-family: 'Droid Serif', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   font-size: 18px;
   line-height: 24px;
+  p {
+    line-height: 26px;  
+  }
   padding: 0 60px;
-  pre {
+  pre, p > code {
+    padding: 0 3px;
     border-width: 1px;
     border-style: dashed;
+  }
+  pre {
     padding: 15px;
     margin: 15px 0;
     font-size: 16px;
@@ -332,6 +340,7 @@ hr {
     margin-bottom: 30px;
   }
   h2 {
+    font-family: 'Droid Serif', 'Georgia', serif;
     margin: 30px 0;
   }
   p + h2, pre + h2, code + h2 {
@@ -392,7 +401,7 @@ td {
     clear: both;
     .box-shadow(0, 5px, 5px, 0.4);
   }
-  pre {
+  pre, code {
     background-color: @bg;
     border-color: darken(@light-yellow, 5%);
   }

@@ -199,13 +199,17 @@ hr {
   color: #2a2522;
   background-color: #bcd279;
 }
-#main pre, #about pre, #docs pre {
+#main pre,
+#about pre,
+#docs pre,
+#main code,
+#about code,
+#docs code {
   border-color: #9fc653;
   background-color: #f4f9ec;
 }
 #main #intro, #about .content, #docs .content {
   background-color: #ecf2d9;
-  font-family: 'Droid Serif', 'Georgia';
   box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.5);
@@ -220,6 +224,7 @@ hr {
   margin: 0 auto;
   width: 100%;
   border-top: 6px solid rgba(0, 0, 0, 0.1);
+  font-family: 'Droid Serif', 'Georgia';
 }
 #main #intro {
   float: left;
@@ -321,7 +326,7 @@ hr {
 #about,
 #installing {
   margin: 0 auto;
-  font-family: 'Droid Serif', 'Georgia', serif;
+  font-family: 'Georgia', serif;
   font-size: 18px;
   line-height: 24px;
   padding: 0 60px;
@@ -334,13 +339,39 @@ hr {
   width: 870px;
   padding: 45px;
 }
+#synopsis code,
+#docs code,
+#reference code,
+#about code,
+#installing code {
+  font-size: 16px;
+}
+#synopsis p,
+#docs p,
+#reference p,
+#about p,
+#installing p {
+  line-height: 26px;
+}
+#synopsis pre,
+#docs pre,
+#reference pre,
+#about pre,
+#installing pre,
+#synopsis p > code,
+#docs p > code,
+#reference p > code,
+#about p > code,
+#installing p > code {
+  padding: 0 3px;
+  border-width: 1px;
+  border-style: dashed;
+}
 #synopsis pre,
 #docs pre,
 #reference pre,
 #about pre,
 #installing pre {
-  border-width: 1px;
-  border-style: dashed;
   padding: 15px;
   margin: 15px 0;
   font-size: 16px;
@@ -360,6 +391,7 @@ hr {
 #reference h2,
 #about h2,
 #installing h2 {
+  font-family: 'Droid Serif', 'Georgia', serif;
   margin: 30px 0;
 }
 #synopsis p + h2,
@@ -444,7 +476,10 @@ td {
   -moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
   -webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
 }
-#reference pre, #synopsis pre {
+#reference pre,
+#synopsis pre,
+#reference code,
+#synopsis code {
   background-color: #191919;
   border-color: #f9f9b3;
 }

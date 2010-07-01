@@ -479,8 +479,8 @@ td {
 }
 #reference pre,
 #synopsis pre,
-#reference code,
-#synopsis code {
+#reference p > code,
+#synopsis p > code {
   background-color: #191919;
   border-color: #f9f9b3;
 }

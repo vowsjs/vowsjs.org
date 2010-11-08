@@ -102,7 +102,7 @@ Now write some tests in *the-good-things-test.js*:
                 'returns a `PeeledBanana`': function (result) {
                     assert.instanceOf (result, PeeledBanana);
                 }
-            }
+            },
             'when peeled *asynchronously*': {
                 topic: function (banana) {
                     banana.peel(this.callback);

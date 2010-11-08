@@ -437,19 +437,19 @@ Fantastic. Here's a an example of what these macros could look like:
 
     {   'GET /': {
             topic: api.get('/'),
-            'shoud respond with a 200 OK': assertStatus(200)
+            'should respond with a 200 OK': assertStatus(200)
         },
         'POST /': {
             topic: api.post('/'),
-            'shoud respond with a 405 Method not allowed': assertStatus(405)
+            'should respond with a 405 Method not allowed': assertStatus(405)
         },
         'GET /resources (no api-key)': {
             topic: api.get('/resources'),
-            'shoud respond with a 403 Forbidden': assertStatus(403)
+            'should respond with a 403 Forbidden': assertStatus(403)
         },
         'GET /resources?apikey=af816e859c249fe'
             topic: api.get('/resources?apikey=af816e859c249fe'),
-            'shoud return a 200 OK': assertStatus(200),
+            'should return a 200 OK': assertStatus(200),
             'should return a list of resources': function (res) {
                 assert.isArray (res.body);
             }
@@ -507,7 +507,7 @@ GET  /
 POST /
   ✓ <span class="vow">should respond with a 405 Method Not Allowed</span>
 GET  /resources (no key)
-  ✓ <span class="vow">shoud respond with a 403 Forbidden</span>
+  ✓ <span class="vow">should respond with a 403 Forbidden</span>
 </pre></div>
 
 The fourth context is a little more complex, as it has two vows, but I'll let you figure that

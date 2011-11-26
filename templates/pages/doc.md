@@ -475,8 +475,8 @@ description. Let's look at a possible implementation:
                 // Get the current context's name, such as "POST /"
                 // and split it at the space.
                 var req    = this.context.name.split(/ +/), // ["POST", "/"]
-                    method = name[0].toLowerCase(),         // "post"
-                    path   = name[1];                       // "/"
+                    method = req[0].toLowerCase(),          // "post"
+                    path   = req[1];                        // "/"
 
                 // Perform the contextual client request,
                 // with the above method and path.

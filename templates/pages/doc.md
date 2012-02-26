@@ -447,7 +447,7 @@ Fantastic. Here's a an example of what these macros could look like:
             topic: api.get('/resources'),
             'should respond with a 403 Forbidden': assertStatus(403)
         },
-        'GET /resources?apikey=af816e859c249fe'
+        'GET /resources?apikey=af816e859c249fe': {
             topic: api.get('/resources?apikey=af816e859c249fe'),
             'should return a 200 OK': assertStatus(200),
             'should return a list of resources': function (res) {

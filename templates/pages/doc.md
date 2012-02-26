@@ -372,9 +372,9 @@ And get the following error:
 
     expected 5, got 3
 
-Now let's try that with one of our more specific assertion functions, `assert.length`:
+Now let's try that with one of our more specific assertion functions, `assert.lengthOf`:
 
-    assert.length(ary, 5);
+    assert.lengthOf(ary, 5);
 
 This reports the following error:
 

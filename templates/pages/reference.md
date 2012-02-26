@@ -124,8 +124,8 @@ Assertion functions
 
 ### length #
 
-    assert.length ([4, 2, 0], 3);
-    assert.length ('goo', 3);
+    assert.lengthOf ([4, 2, 0], 3);
+    assert.lengthOf ('goo', 3);
 
 ### emptiness #
 

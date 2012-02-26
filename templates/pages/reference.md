@@ -82,7 +82,7 @@ Assertion functions
     assert.strictEqual    (4 > 2, true);
 
     assert.notEqual       (4, 2);
-    assert.strictNotEqual (1, true);
+    assert.notStrictEqual (1, true);
 
     assert.deepEqual      ([4, 2], [4, 2]);
     assert.notDeepEqual   ([4, 2], [2, 4]);

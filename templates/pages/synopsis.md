@@ -75,7 +75,7 @@ Now write some tests in *the-good-things-test.js*:
     var vows = require('vows'),
         assert = require('assert');
 
-    var theGoodThings = require('the-good-things');
+    var theGoodThings = require('./the-good-things');
 
     var Strawberry   = theGoodThings.Strawberry,
         Banana       = theGoodThings.Banana,

@@ -1,0 +1,13 @@
+{
+  "pages": {
+    "index": {
+      "partials": [
+        "about",
+        "doc",
+        "installing",
+        "reference",
+        "synopsis"
+      ]
+    }
+  }
+}

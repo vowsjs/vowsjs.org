@@ -1,0 +1,423 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="alternate stylesheet" type="text/less" href="/less/main.less">
+    <script src="/js/less.js" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link rel="alternate" type="application/atom+xml" title="<%= title %> - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Vows &laquo; Asynchronous BDD for Node</title>
+    <script type="text/javascript">
+      (function () {
+          if (document.querySelectorAll) {
+            window.onload = function () {
+              var menu = document.getElementById('menu');
+              var init = menu.offsetTop;
+              var docked;
+
+              var headers = document.querySelectorAll('#docs h2, #synopsis h2');
+
+              for (var i = 0; i < headers.length; i++) {
+                headers[i].id = '-' + headers[i].innerHTML.toLowerCase().replace(/ /g, '-');
+              }
+
+              window.onscroll = function () {
+                if (!docked && (menu.offsetTop - scrollTop() < 0)) {
+                  menu.style.top = 0;
+                  menu.style.position = 'fixed';
+                  menu.className = 'docked';
+                  docked = true;
+                } else if (docked && scrollTop() <= init) {
+                  menu.style.position = 'absolute';
+                  menu.style.top = init + 'px';
+                  menu.className = menu.className.replace('docked', '');
+                  docked = false;
+                }
+              };
+
+
+              (function () {
+                var link     = document.getElementById('guide-link'),
+                    menu     = document.getElementById('menu'),
+                    dropdown = document.getElementById('dropdown');
+
+                link.onmouseover = function () {
+                  link.className = 'dark-red';
+                  dropdown.style.display = 'block';
+                };
+                link.onmouseout = function (e) {
+                  if (e.relatedTarget === dropdown) { return }
+                  link.className = link.className.replace('dark-red', '');
+                  hide ();
+                };
+                dropdown.onmouseout = function (e) {
+                  var t = e.relatedTarget;
+
+                  if (e.target == link) { return }
+
+                  while (t !== document.body) {
+                    if (t == dropdown) { return }
+                    else               { t = t.parentNode }
+                  } 
+                  link.className = link.className.replace('dark-red', '');
+                  hide ();
+                };
+
+                function hide() { dropdown.style.display = 'none' }
+              })();
+            };
+          } else {
+            alert('Please upgrade to a modern browser to view this site.');
+          }
+
+        function scrollTop() {
+          return document.body.scrollTop || document.documentElement.scrollTop;
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <section id="content"><header id="main">
+  <div class="content-container">
+    <section id="intro">
+      <h1>Vows</h1>
+      <h2><span>Asynchronous</span> behaviour driven <span>development</span> for Node.</h2>
+      <h3>
+        There are two reasons why we might want asynchronous testing.
+        The first, and obvious reason is that node.js is asynchronous,
+        and therefore our tests should be. The second reason is to make tests which target I/O
+        run much faster, by running them concurrently.
+      </h3>
+    </section>
+
+    <section id="example">
+        <p>Write some vows, execute them:</p>
+        <pre class="command">$ vows test/* --spec</pre>
+        <p>Get the report, make sure you kept your word.</p>
+        <pre>
+          A non-promise return value
+            &#10003; <span class="vow">should be converted to a promise</span>
+          A topic not emitting an error
+            &#10003; <span class="vow">should pass null if the test is expecting an error</span>
+            &#10003; <span class="vow">should pass the result otherwise</span>
+          A topic emitting an error
+            &#10003; <span class="vow">shouldn't raise an exception if the test expects it</span>
+          A context with a nested context
+            &#10003; <span class="vow">has access to the environment</span>
+            - <span class="vow pending">can make coffee</span>
+          A nested context
+            &#10003; <span class="vow">should have access to the parent topics</span>
+          A nested context with no topics
+            &#10003; <span class="vow">should pass the parent topics down</span>
+
+          &#10003; <span id="ok">OK</span> &#187; <strong>7</strong> honored &bull; <strong>1</strong> pending <span id="time">(0.112s)</span>
+        </pre>
+    </section>
+  </div>
+  <div style="clear: both"></div>
+</header>
+
+<section id="menu">
+  <div class="content-container">
+    <nav>
+      <a href="#intro">intro</a>
+      <a href="#docs" id="guide-link">guide</a>
+      <a href="#installing">installing</a>
+      <a href="#reference">reference</a>
+      <a href="#about">about</a>
+      <a href="http://github.com/cloudhead/vows">source <img id="github" src="/images/github.ico"/></a>
+    </nav>
+    <div id="dropdown">
+      <ul>
+        <li><a href="#-structure-of-a-test-suite">Structure of a Test Suite</a></li>
+        <li><a href="#-how-topics-work">How topics work</a></li>
+        <li><a href="#-running-a-suite">Running a Suite</a></li>
+        <li><a href="#-writing-asynchronous-tests">Asynchronous Testing</a></li>
+        <li><a href="#-assertions">Assertions</a></li>
+        <li><a href="#-macros">Macros</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="synopsis">
+  <div class="synopsis"><h1>Synopsis</h1>
+<p>Vows is a <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">behavior driven development</a>
+framework for <a href="http://nodejs.org">Node.js</a>.
+
+</p>
+<p>Vows was built from the ground up to test asynchronous code. It executes your tests in parallel when it makes sense,
+and sequentially when there are dependencies.
+
+</p>
+<p>Emphasis was put on speed of execution, clarity and user experience.
+
+</p>
+<p>Here&#39;s a simple example, describing &#39;division by zero&#39;:
+
+</p>
+<pre><code>// division-by-zero-test.js
+
+var vows = require(&#39;vows&#39;),
+    assert = require(&#39;assert&#39;);
+
+// Create a Test Suite
+vows.describe(&#39;Division by Zero&#39;).addBatch({
+    &#39;when dividing a number by zero&#39;: {
+        topic: function () { return 42 / 0 },
+
+        &#39;we get Infinity&#39;: function (topic) {
+            assert.equal (topic, Infinity);
+        }
+    },
+    &#39;but when dividing zero by zero&#39;: {
+        topic: function () { return 0 / 0 },
+
+        &#39;we get a value which&#39;: {
+            &#39;is not a number&#39;: function (topic) {
+                assert.isNaN (topic);
+            },
+            &#39;is not equal to itself&#39;: function (topic) {
+                assert.notEqual (topic, topic);
+            }
+        }
+    }
+}).run(); // Run it</code></pre>
+<p>And run it:
+
+</p>
+<pre><code>$ node division-by-zero-test.js</code></pre>
+<hr>
+<p>And now, a little more involved example--let&#39;s suppose we have a module called &#39;<code>the-good-things</code>&#39;, with some fruit constructors
+in it:
+
+</p>
+<pre><code>exports.Strawberry = function () {
+    this.color = &#39;#ff0000&#39;;
+};
+exports.Strawberry.prototype = {
+    isTasty: function () { return true }
+};
+
+exports.Banana = function () {
+    this.color = &#39;#fff333&#39;;
+};
+exports.Banana.prototype = {
+    peel: function (callback) {
+        process.nextTick(function () {
+            callback(null, new(exports.PeeledBanana));
+        });
+    },
+    peelSync: function () { return new(exports.PeeledBanana) }
+};
+
+exports.PeeledBanana = function () {};</code></pre>
+<p>Now write some tests in <em>the-good-things-test.js</em>:
+
+</p>
+<pre><code>var vows = require(&#39;vows&#39;),
+    assert = require(&#39;assert&#39;);
+
+var theGoodThings = require(&#39;./the-good-things&#39;);
+
+var Strawberry   = theGoodThings.Strawberry,
+    Banana       = theGoodThings.Banana,
+    PeeledBanana = theGoodThings.PeeledBanana;
+
+vows.describe(&#39;The Good Things&#39;).addBatch({
+    &#39;A strawberry&#39;: {
+        topic: new(Strawberry),
+
+        &#39;is red&#39;: function (strawberry) {
+            assert.equal (strawberry.color, &#39;#ff0000&#39;);
+        },
+        &#39;and tasty&#39;: function (strawberry) {
+            assert.isTrue (strawberry.isTasty());
+        }
+    },
+    &#39;A banana&#39;: {
+        topic: new(Banana),
+
+        &#39;when peeled *synchronously*&#39;: {
+            topic: function (banana) {
+                return banana.peelSync();
+            },
+            &#39;returns a `PeeledBanana`&#39;: function (result) {
+                assert.instanceOf (result, PeeledBanana);
+            }
+        },
+        &#39;when peeled *asynchronously*&#39;: {
+            topic: function (banana) {
+                banana.peel(this.callback);
+            },
+            &#39;results in a `PeeledBanana`&#39;: function (err, result) {
+                assert.instanceOf (result, PeeledBanana);
+            }
+        }
+    }
+}).export(module); // Export the Suite</code></pre>
+<p>And run them with the test runner:
+
+</p>
+<pre><code>$ vows the-good-things-test.js</code></pre>
+</div>
+</section>
+
+<section id="installing">
+  <div class="installing"><h1>Installing</h1>
+<p>The easiest way to install Vows, is via <a href="http://github.com/isaacs/npm">npm</a>, the node package manager, as so:
+
+</p>
+<pre><code>$ npm install vows</code></pre>
+<p>This will get you the latest stable version. If you want the bleeding edge, try:
+
+</p>
+<pre><code>$ npm install vows@latest</code></pre>
+</div>
+</section>
+
+<section id="docs">
+  <div class="docs">
+  </div>
+</section>
+
+<section id="reference">
+  <div class="reference"><h1>Reference</h1>
+<p>The CLI and assertion module are documented here.
+
+</p>
+<h2>Test runner</h2>
+<pre><code>vows [FILE, ...] [options]</code></pre>
+<p>Running specific tests
+
+</p>
+<pre><code>$ vows test-1.js test-2.js
+$ vows tests/*</code></pre>
+<p>Running all tests in your <em>test/</em> or <em>spec/</em> folder
+
+</p>
+<pre><code>$ vows</code></pre>
+<p>Watch mode
+
+</p>
+<pre><code>$ vows -w
+$ vows --watch</code></pre>
+<hr>
+<h3>Options</h3>
+<table cellspacing="10">
+  <tr>
+    <td><code>-v</code>, <code>--verbose</code></td>
+    <td>Verbose mode</td>
+  </tr>
+  <tr>
+    <td><code>-w</code>, <code>--watch</code></td>
+    <td>Watch mode</td>
+  </tr>
+  <tr>
+    <td><code>-m STRING</code></td>
+    <td>String matching: Only run tests with <code>STRING</code> in their title</td>
+  </tr>
+  <tr>
+    <td><code>-r REGEXP</code></td>
+    <td>Regexp matching: Only run tests with <code>REGEXP</code> in their title</td>
+  </tr>
+  <tr>
+    <td><code>--json</code></td>
+    <td>Use JSON reporter</td>
+  </tr>
+  <tr>
+    <td><code>--spec</code></td>
+    <td>Use Spec reporter</td>
+  </tr>
+  <tr>
+    <td><code>--dot-matrix</code></td>
+    <td>Use Dot-Matrix reporter</td>
+  </tr>
+  <!-- <tr> -->
+  <!--   <td><code>-no-color</code></td> -->
+  <!--   <td>Don't use terminal colors</td> -->
+  <!-- </tr> -->
+  <tr>
+    <td><code>--version</code></td>
+    <td>Show version</td>
+  </tr>
+  <tr>
+    <td><code>-s</code>, <code>--silent</code></td>
+    <td>Don&#39;t report</td>
+  </tr>
+  <tr>
+    <td><code>--help</code></td>
+    <td>Show help</td>
+  </tr>
+</table>
+
+<h2>Assertion functions</h2>
+<h3>equality</h3>
+<pre><code>assert.equal          (4, 4);
+assert.strictEqual    (4 &gt; 2, true);
+
+assert.notEqual       (4, 2);
+assert.notStrictEqual (1, true);
+
+assert.deepEqual      ([4, 2], [4, 2]);
+assert.notDeepEqual   ([4, 2], [2, 4]);</code></pre>
+<h3>type</h3>
+<pre><code>assert.isFunction (function () {});
+assert.isObject   ({goo:true});
+assert.isString   (&#39;goo&#39;);
+assert.isArray    ([4, 2]);
+assert.isNumber   (42);
+assert.isBoolean  (true);
+
+assert.typeOf     (42, &#39;number&#39;);
+assert.instanceOf ([], Array);</code></pre>
+<h3>truth</h3>
+<pre><code>assert.isTrue  (true);
+assert.isFalse (false);</code></pre>
+<h3>null, undefined, NaN</h3>
+<pre><code>assert.isNull      (null);
+assert.isNotNull   (undefined);
+
+assert.isUndefined (&#39;goo&#39;[9]);
+assert.isNaN       (0/0);</code></pre>
+<h3>inclusion</h3>
+<pre><code>assert.include ([4, 2, 0], 2);
+assert.include ({goo:true}, &#39;goo&#39;);
+assert.include (&#39;goo&#39;, &#39;o&#39;);</code></pre>
+<h3>regexp matching</h3>
+<pre><code>assert.match (&#39;hello&#39;, /^[a-z]+/);</code></pre>
+<h3>length</h3>
+<pre><code>assert.lengthOf ([4, 2, 0], 3);
+assert.lengthOf (&#39;goo&#39;, 3);</code></pre>
+<h3>emptiness</h3>
+<pre><code>assert.isEmpty ([]);
+assert.isEmpty ({});
+assert.isEmpty (&quot;&quot;);</code></pre>
+<h3>exceptions</h3>
+<pre><code>assert.throws(function () { x + x }, ReferenceError);
+assert.doesNotThrow(function () { 1 + 1 }, Error);</code></pre>
+</div>
+</section>
+
+<section id="about">
+  <div class="about"><h1>About</h1>
+<p>Vows was developed by <a href="http://cloudhead.io">Alexis Sellier</a>, more commonly known as <a href="http://cloudhead.io">cloudhead</a>.
+</p>
+</div>
+</section>
+
+<footer>
+  <p>powered by <a href="http://cloudhead.io/toto">toto</a>, <a href="http://github.com/cloudhead/less.js">LESS</a> and <a href="http://github.com/cloudhead/hijs">hijs</a></p>
+  <p id="copy">Copyright &copy; Alexis Sellier 2010</p>
+</footer>
+</section>
+    <a href="http://github.com/cloudhead/vows">
+      <img style="position: absolute; z-index: 5; top: 0; left: 0; border: 0;"
+           src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"
+           alt="Fork me on GitHub" />
+    </a>
+    <script src="/js/hijs.js"></script>
+  </body>
+</html>
+

@@ -33,17 +33,15 @@ h4 {
   margin: 0;
   font-weight: normal;
 }
-ul, li {
+ul,
+li {
   list-style-type: none;
 }
 code {
-  font-family: 'Bitstream Vera Sans Mono',
-               'DejaVu Sans Mono',
-               'Monaco',
-               Courier,
-               monospace !important;
+  font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', 'Monaco', Courier, monospace !important;
 }
-code .string, code .regexp {
+code .string,
+code .regexp {
   color: #39532d;
 }
 code .keyword {
@@ -55,7 +53,8 @@ code .comment {
 code .number {
   color: #a33d29;
 }
-code .class, code .special {
+code .class,
+code .special {
   color: rgba(0, 50, 100, 0.8);
 }
 pre {
@@ -90,7 +89,8 @@ body > footer {
 nav {
   margin-left: 15px;
 }
-nav a, #dropdown li {
+nav a,
+#dropdown li {
   display: inline-block;
   color: white;
   line-height: 42px;
@@ -101,7 +101,8 @@ nav a, #dropdown li {
   border: 2px solid transparent;
   border-width: 0 2px;
 }
-nav a:hover, #dropdown li:hover {
+nav a:hover,
+#dropdown li:hover {
   border: 2px solid #3d170f;
   border-left-color: #662619;
   border-right-color: #662619;
@@ -118,7 +119,7 @@ nav a:hover, #dropdown li:hover {
   border-top: 0;
   background-color: #7a2e1f;
 }
-.content {
+.content-container {
   margin: 0 auto;
   width: 960px;
 }
@@ -156,9 +157,6 @@ nav a:hover, #dropdown li:hover {
   border-right-color: #662619;
   border-top-width: 0;
   background-color: #7a2e1f;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
   -moz-border-top-right-radius: 0;
@@ -195,7 +193,9 @@ hr {
   margin: 30px 0;
   border: 0;
 }
-#main, #about, #docs {
+#main,
+#about,
+#docs {
   color: #2a2522;
   background-color: #bcd279;
 }
@@ -208,13 +208,15 @@ hr {
   border-color: #9fc653;
   background-color: #f4f9ec;
 }
-#main #intro, #about .content, #docs .content {
+#main #intro,
+#about .about,
+#docs .docs {
   background-color: #ecf2d9;
   box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.5);
 }
-#docs .content {
+#docs .docs {
   border-top: 1px solid #bcd279;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
@@ -288,28 +290,13 @@ hr {
   box-shadow: 0 0px 15px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.5);
-  font-family: 'Bitstream Vera Sans Mono',
-               'DejaVu Sans Mono',
-               'Monaco',
-               Courier,
-               monospace !important;
+  font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', 'Monaco', Courier, monospace !important;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-  border-top-right-radius: 0;
-  border-top-left-radius: 0;
-  -moz-border-top-right-radius: 0;
-  -moz-border-top-left-radius: 0;
-  -webkit-border-top-left-radius: 0;
-  -webkit-border-top-right-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-  -moz-border-bottom-left-radius: 0;
-  -moz-border-top-left-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -webkit-border-top-left-radius: 0;
 }
-#main #example pre .vow, #main #example pre #ok {
+#main #example pre .vow,
+#main #example pre #ok {
   color: #99c270;
 }
 #main #example pre .vow.pending {
@@ -318,8 +305,17 @@ hr {
 #main #example pre #time {
   color: #aaaaaa;
 }
-.report pre .vow, .report pre #ok {
+.report pre .vow,
+.report pre #ok {
   color: #4d6b2e;
+}
+#synopsis .synopsis,
+#docs .docs,
+#reference .reference,
+#about .about,
+#installing .installing {
+  width: 870px;
+  padding: 45px;
 }
 #synopsis,
 #docs,
@@ -331,14 +327,6 @@ hr {
   font-size: 18px;
   line-height: 24px;
   padding: 0 60px;
-}
-#synopsis .content,
-#docs .content,
-#reference .content,
-#about .content,
-#installing .content {
-  width: 870px;
-  padding: 45px;
 }
 #synopsis code,
 #docs code,
@@ -435,14 +423,15 @@ hr {
 #docs code + h2 {
   border-top: 6px solid rgba(0, 0, 0, 0.1);
 }
-#about hr, #docs hr {
+#about hr,
+#docs hr {
   background-color: rgba(0, 0, 0, 0.1);
 }
 #installing {
   color: #2a2522;
   background-color: #f8f89b;
 }
-#installing .content {
+#installing .installing {
   clear: both;
   border-color: transparent;
   background-color: #fcfcd4;
@@ -454,7 +443,9 @@ hr {
   background-color: #eaf2d9;
   border-color: #b9b90e;
 }
-#installing p + h2, #installing pre + h2, #installing code + h2 {
+#installing p + h2,
+#installing pre + h2,
+#installing code + h2 {
   border-top-color: rgba(0, 0, 0, 0.1);
 }
 td {
@@ -465,17 +456,19 @@ td {
   line-height: 18px;
   font-size: 14px;
 }
-#reference, #synopsis {
-  text-shadow: 0 -1px 1px #191919;
-  color: #eaf2d9;
-  background-color: #191919;
-}
-#reference .content, #synopsis .content {
+#reference .reference,
+#synopsis .synopsis {
   background-color: #262626;
   clear: both;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
   -webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
+}
+#reference,
+#synopsis {
+  text-shadow: 0 -1px 1px #191919;
+  color: #eaf2d9;
+  background-color: #191919;
 }
 #reference pre,
 #synopsis pre,
@@ -490,14 +483,17 @@ td {
 #synopsis code .regexp {
   color: #b5c587;
 }
-#reference code .keyword, #synopsis code .keyword {
+#reference code .keyword,
+#synopsis code .keyword {
   color: #c2a770;
   font-weight: normal;
 }
-#reference code .comment, #synopsis code .comment {
+#reference code .comment,
+#synopsis code .comment {
   color: rgba(255, 255, 255, 0.2);
 }
-#reference code .number, #synopsis code .number {
+#reference code .number,
+#synopsis code .number {
   color: #a33d29;
 }
 #reference code .class,
@@ -506,19 +502,21 @@ td {
 #synopsis code .special {
   color: #669199;
 }
-#reference a, #synopsis a {
+#reference a,
+#synopsis a {
   color: #fbfbcb;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
 }
-#reference a:hover, #synopsis a:hover {
+#reference a:hover,
+#synopsis a:hover {
   text-decoration: none;
   border-bottom: 1px dashed #fbfbcb;
 }
 #synopsis {
   padding-top: 30px;
-  background-color: #2a2522;
+  background-color: #2a2522 !important;
 }
-#synopsis .content {
+#synopsis .synopsis {
   background-color: #302d2c;
 }
 #about footer {

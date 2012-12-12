@@ -1,5 +1,5 @@
 <header id="main">
-  <div class="content">
+  <div class="content-container">
     <section id="intro">
       <h1>Vows</h1>
       <h2><span>Asynchronous</span> behaviour driven <span>development</span> for Node.</h2>
@@ -39,7 +39,7 @@
 </header>
 
 <section id="menu">
-  <div class="content">
+  <div class="content-container">
     <nav>
       <a href="#intro">intro</a>
       <a href="#docs" id="guide-link">guide</a>
@@ -62,32 +62,27 @@
 </section>
 
 <section id="synopsis">
-  <div class="content">
-    <%= markdown File.read(Toto::Paths[:pages] + '/synopsis.md') %>
+  <div class="synopsis">
   </div>
 </section>
 
 <section id="installing">
-  <div class="content">
-    <%= markdown File.read(Toto::Paths[:pages] + '/installing.md') %>
+  <div class="installing">
   </div>
 </section>
 
 <section id="docs">
-  <div class="content">
-      <%= markdown File.read(Toto::Paths[:pages] + '/doc.md') %>
+  <div class="docs">
   </div>
 </section>
 
 <section id="reference">
-  <div class="content">
-    <%= markdown File.read(Toto::Paths[:pages] + '/reference.md') %>
+  <div class="reference">
   </div>
 </section>
 
 <section id="about">
-  <div class="content">
-    <%= markdown File.read(Toto::Paths[:pages] + '/about.md') %>
+  <div class="about">
   </div>
 </section>
 

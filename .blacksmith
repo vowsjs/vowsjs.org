@@ -1,13 +1,16 @@
 {
   "pages": {
     "index": {
-      "partials": [
-        "about",
-        "doc",
-        "installing",
-        "reference",
-        "synopsis"
-      ]
+      "content": {
+        "partial": "main",
+        "compile": [
+          "about",
+          "doc",
+          "installing",
+          "reference",
+          "synopsis"
+        ]
+      }
     }
   }
 }

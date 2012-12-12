@@ -119,6 +119,11 @@ nav a:hover,
   border-top: 0;
   background-color: #7a2e1f;
 }
+#synopsis .synopsis,
+#installing .installing,
+#docs .docs,
+#reference .reference,
+#about .about,
 .content-container {
   margin: 0 auto;
   width: 960px;
@@ -519,7 +524,8 @@ td {
 #synopsis .synopsis {
   background-color: #302d2c;
 }
-#about footer {
+#about,
+footer {
   margin-top: 30px;
   padding-top: 30px;
   border-top: 6px solid rgba(0, 0, 0, 0.1);
@@ -527,7 +533,8 @@ td {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.4);
 }
-#about footer #copy {
+#about #copy,
+footer #copy {
   font-size: 12px;
 }
 #github {

@@ -1,0 +1,21 @@
+{
+  "name": "vowsjs.org",
+  "description": "The VowsJs.org documentation site",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "start": "node bin/server"
+  },
+  "author": "Alexis Sellier <alexis@cloudhead.io>",
+  "dependencies": {
+    "http-server": "0.5.2"
+  },
+  "subdomain": "vows",
+  "domains": [
+    "vowsjs.org",
+    "www.vowsjs.org"
+  ],
+  "engines": {
+    "node": "0.8.x"
+  }
+}

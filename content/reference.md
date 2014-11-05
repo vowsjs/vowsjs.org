@@ -87,6 +87,8 @@ Assertion functions
     assert.deepEqual      ([4, 2], [4, 2]);
     assert.notDeepEqual   ([4, 2], [2, 4]);
 
+    assert.epsilon        (1e-5, 0.1 + 0.2, 0.3);
+
 ### type #
 
     assert.isFunction (function () {});

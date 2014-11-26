@@ -2,7 +2,7 @@
   "name": "vowsjs.org",
   "description": "The VowsJs.org documentation site",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "scripts": {
     "start": "node bin/server"
   },

@@ -16,8 +16,8 @@
         <pre class="command">$ vows test/* --spec</pre>
         <p>Get the report, make sure you kept your word.</p>
         <pre>
-          A non-promise return value
-            &#10003; <span class="vow">should be converted to a promise</span>
+          A non-EventEmitter return value
+            &#10003; <span class="vow">should be converted to an EventEmitter</span>
           A topic not emitting an error
             &#10003; <span class="vow">should pass null if the test is expecting an error</span>
             &#10003; <span class="vow">should pass the result otherwise</span>

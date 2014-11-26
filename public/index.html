@@ -96,8 +96,8 @@
         <pre class="command">$ vows test/* --spec</pre>
         <p>Get the report, make sure you kept your word.</p>
         <pre>
-          A non-promise return value
-            &#10003; <span class="vow">should be converted to a promise</span>
+          A non-EventEmitter return value
+            &#10003; <span class="vow">should be converted to an EventEmitter</span>
           A topic not emitting an error
             &#10003; <span class="vow">should pass null if the test is expecting an error</span>
             &#10003; <span class="vow">should pass the result otherwise</span>
@@ -456,18 +456,18 @@ hasn&#39;t returned.</p>
 <p>Note that topics which make use of &#39;<code>this.callback</code>&#39; must not return anything. And likewise, topics
 which do not return anything must make use of &#39;<code>this.callback</code>&#39;.</p>
 </blockquote>
-<h3 id="promises">Promises</h3>
-<p>Vows also supports promise-based async out of the box, so if that works better for your purpose,
+<h3 id="eventemitters">EventEmitters</h3>
+<p>Vows also supports EventEmitter-based async out of the box, so if that works better for your purpose,
 you can return an instance of <code>EventEmitter</code> from a topic, and the tests will be run when it
 emits a <code>&quot;success&quot;</code> or <code>&quot;error&quot;</code> event:</p>
 <pre><code>{ topic: function () {
-    var promise = new(events.EventEmitter);
+    var emitter = new(events.EventEmitter);
 
     fs.stat(&#39;~/FILE&#39;, function (e, res) {
-        if (e) { promise.emit(&#39;error&#39;, e) }
-        else   { promise.emit(&#39;success&#39;, res) }
+        if (e) { emitter.emit(&#39;error&#39;, e) }
+        else   { emitter.emit(&#39;success&#39;, res) }
     });
-    return promise;
+    return emitter;
   },
   &#39;can be accessed&#39;: function (err, stat) {
     assert.isNull   (err);        // We have no error

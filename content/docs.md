@@ -273,20 +273,20 @@ hasn't returned.
 > Note that topics which make use of '`this.callback`' must not return anything. And likewise, topics
 which do not return anything must make use of '`this.callback`'.
 
-### Promises #
+### EventEmitters #
 
-Vows also supports promise-based async out of the box, so if that works better for your purpose,
+Vows also supports EventEmitter-based async out of the box, so if that works better for your purpose,
 you can return an instance of `EventEmitter` from a topic, and the tests will be run when it
 emits a `"success"` or `"error"` event:
 
     { topic: function () {
-        var promise = new(events.EventEmitter);
+        var emitter = new(events.EventEmitter);
 
         fs.stat('~/FILE', function (e, res) {
-            if (e) { promise.emit('error', e) }
-            else   { promise.emit('success', res) }
+            if (e) { emitter.emit('error', e) }
+            else   { emitter.emit('success', res) }
         });
-        return promise;
+        return emitter;
       },
       'can be accessed': function (err, stat) {
         assert.isNull   (err);        // We have no error
